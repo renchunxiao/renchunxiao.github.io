@@ -1,0 +1,568 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>Java Class 文件结构 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java Class 文件结构</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java Class 文件结构</h1><div class="post-meta">Dec 18, 2014<span> | </span><span class="category"><a href="/categories/JVM/">JVM</a></span></div><div class="post-content"><h4 id="Class-类文件的结构"><a href="#Class-类文件的结构" class="headerlink" title="Class 类文件的结构"></a>Class 类文件的结构</h4><p>Class 文件是一组以8位字节位基础单元的二进制流，各个数据项目严格按照顺序紧凑地排列在 Class 文件之中，之间没有任何分隔符。当遇到需要占用8位字节以上空间的数据项，则会按照高位在前的方式分割成若干个8位字节进行存储。</p>
+<p>无符号属性属于基本的数据类型，以 u1、u2、u4、u8 来分别代表1个字节、2个字节、4个字节和8个字节的无符号数，无符号数可以用来描述数字、索引引用、数量值。</p>
+<p>整个 Class 文件本质上就是一张表，如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">u4</td>
+<td style="text-align:left">magic</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">minor_version</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">major_version</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left"><code>constant_pool_count</code></td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">cp_info</td>
+<td style="text-align:left">constant_pool</td>
+<td style="text-align:left"><code>constant_pool_count</code> - 1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">access_flags</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">this_class</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">super_class</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">interfaces_count</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">interfaces</td>
+<td style="text-align:left">interfaces_count</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">fields_count</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">field_info</td>
+<td style="text-align:left">fileds</td>
+<td style="text-align:left">fields_count</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">methods_count</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">method_info</td>
+<td style="text-align:left">methods</td>
+<td style="text-align:left">methods_count</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">attribute_count</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">attribute_info</td>
+<td style="text-align:left">attributes</td>
+<td style="text-align:left">attribute_count</td>
+</tr>
+</tbody>
+</table>
+<h4 id="魔数与-Class-文件的版本"><a href="#魔数与-Class-文件的版本" class="headerlink" title="魔数与 Class 文件的版本"></a>魔数与 Class 文件的版本</h4><p>每个 Class 文件的头4个字节成为魔数，他的唯一作用数由于确认整个文件是否为一个能被虚拟机接受的 Class 文件。第5-6字节是次版本号，第7-8字节是主版本号。</p>
+<h4 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h4><p>在主版本之后是常量池入口，常量池是 Class 文件结构中与其他项目关联最多的数据类型。这个容量的计数是从1开始的。如果常量池的值是0x0016，即十进制22，就代表常量池中有21个常量，索引值是1-21。</p>
+<p>Class 文件结构中只有常量池的容量计数是从1开始的，其他的都是从0开始的。</p>
+<p>常量池中主要存放两大类常量：字面量和符号引用。</p>
+<p>字面量如文本字符串、被声明为 final 的常量值等。</p>
+<p>符号引用包括下面三类：</p>
+<ul>
+<li>类和接口的全限定名</li>
+<li>字段的名称和描述符</li>
+<li>方法的名称和描述符</li>
+</ul>
+<p>常量池中的每一项常量都是一个表，共有11种结构不同的表，这11种表都有一个共同的特点，就是表开始的第一位是一个 u1 类型的标志位（tag，取值为1-12，缺少标志位2的数据类型），代表当前整个常量属于哪种常量类型，它的取值如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">标志</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Utf8_info</code></td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">utf-8缩略编码字符串</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Integer_info</code></td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">整型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Float_info</code></td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">浮点型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Long_info</code></td>
+<td style="text-align:left">5</td>
+<td style="text-align:left">长整型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Double_info</code></td>
+<td style="text-align:left">6</td>
+<td style="text-align:left">双精度浮点型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Class_info</code></td>
+<td style="text-align:left">7</td>
+<td style="text-align:left">类或接口的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_String_info</code></td>
+<td style="text-align:left">8</td>
+<td style="text-align:left">字符串类型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Fieldref_info</code></td>
+<td style="text-align:left">9</td>
+<td style="text-align:left">字段的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_Methodref_info</code></td>
+<td style="text-align:left">10</td>
+<td style="text-align:left">类中方法的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_InterfaceMethodref_info</code></td>
+<td style="text-align:left">11</td>
+<td style="text-align:left">接口中方法的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>CONSTANT_NameAndType_info</code></td>
+<td style="text-align:left">12</td>
+<td style="text-align:left">字段或方法的部分符号引用</td>
+</tr>
+</tbody>
+</table>
+<p>常量池当中的11种数类型的结构总表如下图：</p>
+<p><img src="https://renchunxiao.com/public/images/constant1.png" alt="常量池1"><br><img src="https://renchunxiao.com/public/images/constant2.png" alt="常量池2"></p>
+<h4 id="访问标志"><a href="#访问标志" class="headerlink" title="访问标志"></a>访问标志</h4><p>常量池结束之后，接着的2个字节代表访问标志(access_flags)，这个标志用于识别一些类或接口层次的访问信息，包括：</p>
+<ul>
+<li>这个 Class 是类还是接口</li>
+<li>是否定义为 public 类型</li>
+<li>是否定义位 abstract 类型</li>
+<li>如果是类，是否生命位 final 等等</li>
+</ul>
+<p>如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标志名称</th>
+<th style="text-align:left">标志值</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ACC_PUBLIC</td>
+<td style="text-align:left">0x0001</td>
+<td style="text-align:left">是否为 public 类型</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_FINAL</td>
+<td style="text-align:left">0x0010</td>
+<td style="text-align:left">是否被声明为 final，只有类可设置</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_SUPER</td>
+<td style="text-align:left">0x0020</td>
+<td style="text-align:left">是否允许使用 invokespecial 字节码指令，jdk 1.2 之后编译出来的类整个标志为真</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_INTERFACE</td>
+<td style="text-align:left">0x0200</td>
+<td style="text-align:left">标识这是个接口</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_ABSTRACT</td>
+<td style="text-align:left">0x0400</td>
+<td style="text-align:left">是否为 abstract 类型，对于接口或抽象类来说整个标志是真，其他为假</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_SYNTHETIC</td>
+<td style="text-align:left">0x1000</td>
+<td style="text-align:left">标识这个类并非由用户代码产生</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_ANNOTATION</td>
+<td style="text-align:left">0x2000</td>
+<td style="text-align:left">标识这是一个注解</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_ENUM</td>
+<td style="text-align:left">0x4000</td>
+<td style="text-align:left">标识这是一个枚举</td>
+</tr>
+</tbody>
+</table>
+<p>每种访问信息都由一个十六进制的标志值表示，如果同时具有多种访问信息，则得到的标志值为这几种访问信息的标志值的逻辑或。</p>
+<h4 id="类索引、父类索引与接口索引集合"><a href="#类索引、父类索引与接口索引集合" class="headerlink" title="类索引、父类索引与接口索引集合"></a>类索引、父类索引与接口索引集合</h4><ul>
+<li><p>u2 <code>this_class</code> 表示类的常量池索引，指向常量池中 <code>CONSTANT_Class_info</code> 的常量</p>
+</li>
+<li><p>u2 <code>super_class</code> 表示超类的索引，指向常量池中 <code>CONSTANT_Class_info</code> 的常量</p>
+</li>
+<li><p>u2 interfaces_counts 表示接口的数量</p>
+</li>
+<li><p>u2 interfaces[<code>interfaces_counts</code>]表示接口表，它里面每一项都指向常量池中 <code>CONSTANT_Class_info</code> 常量</p>
+</li>
+</ul>
+<p>Class 文件中由这三项数据来确定整类的继承关系。由于 Java 是单继承，所以父类索引只有一个，除了 java.lang.Object 外，所有 Java 类的父类索引都不是0。</p>
+<h4 id="字段表集合"><a href="#字段表集合" class="headerlink" title="字段表集合"></a>字段表集合</h4><p>field_info 用于表述接口或类中声明的变量。字段包括了类级别变量和实例变量，但是不包括定义在方法内的变量。</p>
+<p>字段 (field_info) 结构表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">access_flags</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">name_index（对常量池的引用，代表字段的简单名称）</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">descriptor_index（对常量池的引用，代表字段的描述符）</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">attributes_count</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">attributes</td>
+<td style="text-align:left">attributes_count</td>
+</tr>
+</tbody>
+</table>
+<p>字段表集合当中不会包含超类或者父类接口中继承而来的字段，但是有可能包含不存在的字段，例如内部类中为了保持对外部类的访问性，就会自动添加指向外部类实例的字段。</p>
+<p>字段修饰符放在 <code>access_flags</code> 项目中，它与类中的 <code>access_flags</code> 项目是类似的都是一个 u2 的数据类型，具体标志位如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标志名称</th>
+<th style="text-align:left">标志值</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ACC_PUBLIC</td>
+<td style="text-align:left">0x0001</td>
+<td style="text-align:left">字段是否为 public</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_PRIVATE</td>
+<td style="text-align:left">0x0002</td>
+<td style="text-align:left">字段是否为 private</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_PROTECTED</td>
+<td style="text-align:left">0x0004</td>
+<td style="text-align:left">字段是否为 protected</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_STATIC</td>
+<td style="text-align:left">0x0008</td>
+<td style="text-align:left">字段是否为 static</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_FINAL</td>
+<td style="text-align:left">0x0010</td>
+<td style="text-align:left">字段是否为 final</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_VOLATILE</td>
+<td style="text-align:left">0x0040</td>
+<td style="text-align:left">字段是否为 volatile</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_TRANSIENT</td>
+<td style="text-align:left">0x0080</td>
+<td style="text-align:left">字段是否为 transient</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_SYNTHETIC</td>
+<td style="text-align:left">0x1000</td>
+<td style="text-align:left">字段是否由编译器自动产生的</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_ENUM</td>
+<td style="text-align:left">0x4000</td>
+<td style="text-align:left">字段是否为 enum</td>
+</tr>
+</tbody>
+</table>
+<h4 id="简单名称、描述符、全限定名"><a href="#简单名称、描述符、全限定名" class="headerlink" title="简单名称、描述符、全限定名"></a>简单名称、描述符、全限定名</h4><p>例如：java.lang.Object 这个类，它的全限定名是 “java/lang/Object”，使用时会在后面加上“;”表示结束。</p>
+<p>简单名称就是指没有类型和参数修饰的方法或字段名称，如果类中由个方法是这样 <code>public void method() {...}</code> 那么它的简单名称就是 method。</p>
+<p>描述符是描述字段的数据类型、方法的参数列表和返回值。</p>
+<p>描述符的含义可以看下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标识字符</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:left">byte</td>
+</tr>
+<tr>
+<td style="text-align:left">C</td>
+<td style="text-align:left">char</td>
+</tr>
+<tr>
+<td style="text-align:left">D</td>
+<td style="text-align:left">double</td>
+</tr>
+<tr>
+<td style="text-align:left">F</td>
+<td style="text-align:left">float</td>
+</tr>
+<tr>
+<td style="text-align:left">I</td>
+<td style="text-align:left">int</td>
+</tr>
+<tr>
+<td style="text-align:left">J</td>
+<td style="text-align:left">long</td>
+</tr>
+<tr>
+<td style="text-align:left">S</td>
+<td style="text-align:left">short</td>
+</tr>
+<tr>
+<td style="text-align:left">Z</td>
+<td style="text-align:left">boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">V</td>
+<td style="text-align:left">void</td>
+</tr>
+<tr>
+<td style="text-align:left">L</td>
+<td style="text-align:left">对象类型，如Ljava/lang/Object;</td>
+</tr>
+</tbody>
+</table>
+<p>对于数组类型，每一维度将使用一个前置的 “[” 字符来表示，例如定义一个 <code>String[][]</code> 类型的二维数组，将被记录为： “[[Ljava/lang/String;” 。</p>
+<p>描述符来描述方法时，按照先参数列表后返回值的顺序描述，参数列表按照参数的顺序放在一组小括号 <code>()</code> 之内。</p>
+<p>如果方法是 void inc() 那么描述符是 ()V</p>
+<p>如果方法是 String toString() 那么描述符是 ()Ljava/lang/String</p>
+<p>如果方法是 int indexOf(char[] source,int offset,double dd) 那么描述符是 ([CID)I</p>
+<h4 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h4><p>方法表集合与字段表集合差不多，如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">access_flags</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">name_index（对常量池的引用，代表方法的简单名称）</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">descriptor_index（对常量池的引用，代表方法的描述符）</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">attributes_count</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">u2</td>
+<td style="text-align:left">attributes</td>
+<td style="text-align:left">attributes_count</td>
+</tr>
+</tbody>
+</table>
+<p>方法的访问标志表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标志名称</th>
+<th style="text-align:left">标志值</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">ACC_PUBLIC</td>
+<td style="text-align:left">0x0001</td>
+<td style="text-align:left">方法是否为 public</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_PRIVATE</td>
+<td style="text-align:left">0x0002</td>
+<td style="text-align:left">方法是否为 private</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_PROTECTED</td>
+<td style="text-align:left">0x0004</td>
+<td style="text-align:left">方法是否为 protected</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_STATIC</td>
+<td style="text-align:left">0x0008</td>
+<td style="text-align:left">方法是否为 static</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_FINAL</td>
+<td style="text-align:left">0x0010</td>
+<td style="text-align:left">方法是否为 final</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_SYNCHRONIZED</td>
+<td style="text-align:left">0x0020</td>
+<td style="text-align:left">方法是否为 synchronized</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_BRIDGE</td>
+<td style="text-align:left">0x0040</td>
+<td style="text-align:left">方法是否由编译器产生的桥接方法</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_VRARGS</td>
+<td style="text-align:left">0x0080</td>
+<td style="text-align:left">方法是否为不定参数</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_NATIVE</td>
+<td style="text-align:left">0x0100</td>
+<td style="text-align:left">方法是为 native</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_ABSTRACT</td>
+<td style="text-align:left">0x0400</td>
+<td style="text-align:left">方法是为 abstract</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_STRICT</td>
+<td style="text-align:left">0x0800</td>
+<td style="text-align:left">方法是为 strictfp</td>
+</tr>
+<tr>
+<td style="text-align:left">ACC_SYNTHETIC</td>
+<td style="text-align:left">0x1000</td>
+<td style="text-align:left">方法是否由编译器自动产生的</td>
+</tr>
+</tbody>
+</table>
+<h4 id="属性表集合"><a href="#属性表集合" class="headerlink" title="属性表集合"></a>属性表集合</h4><p>虚拟机规范预定义的属性表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">属性名称</th>
+<th style="text-align:left">使用位置</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Code</td>
+<td style="text-align:left">方法表</td>
+<td style="text-align:left">Java 代码编译成的字节码</td>
+</tr>
+<tr>
+<td style="text-align:left">ConstantValue</td>
+<td style="text-align:left">字段表</td>
+<td style="text-align:left">final 关键字定义的常量</td>
+</tr>
+<tr>
+<td style="text-align:left">Deprecated</td>
+<td style="text-align:left">类、方法、字段表</td>
+<td style="text-align:left">被声明为 deprecated 的方法和字段</td>
+</tr>
+<tr>
+<td style="text-align:left">Exceptions</td>
+<td style="text-align:left">方法表</td>
+<td style="text-align:left">方法抛出的异常</td>
+</tr>
+<tr>
+<td style="text-align:left">InnerClasses</td>
+<td style="text-align:left">类文件</td>
+<td style="text-align:left">内部类列表</td>
+</tr>
+<tr>
+<td style="text-align:left">LineNumberTable</td>
+<td style="text-align:left">Code 属性</td>
+<td style="text-align:left">Java 源码的行号与字节码指令的对应关系</td>
+</tr>
+<tr>
+<td style="text-align:left">LocalVaribaleTable</td>
+<td style="text-align:left">Code 属性</td>
+<td style="text-align:left">方法的局部变量描述</td>
+</tr>
+<tr>
+<td style="text-align:left">SourceFile</td>
+<td style="text-align:left">类文件</td>
+<td style="text-align:left">源文件名称</td>
+</tr>
+<tr>
+<td style="text-align:left">Synthetic</td>
+<td style="text-align:left">类、方法表、字段表</td>
+<td style="text-align:left">标识方法或字段为编译器自动生成的</td>
+</tr>
+</tbody>
+</table>
+<p>对于每个属性，它的名称都需要从常量池中引用一个 <code>CONSTANT_Utf8_info</code> 类型的常量来表示，而属性的结构是完全自定义的，只需要说明属性值所占用的位数长度即可。</p>
+</div><div class="tags"><a href="/tags/笔记-java/">笔记 java</a></div><div class="post-nav"><a class="pre" href="/2014/12/19/base64-encoding/">base64 编码原理</a><a class="next" href="/2014/12/18/vim-learn2/">vim 插入模式和可视模式</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

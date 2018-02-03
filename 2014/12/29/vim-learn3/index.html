@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>vim 命令行模式1 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">vim 命令行模式1</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">vim 命令行模式1</h1><div class="post-meta">Dec 29, 2014<span> | </span><span class="category"><a href="/categories/vim/">vim</a></span></div><div class="post-content"><p>在按下 ： 键时，vim 会切换到命令行模式。在任意时刻，我们都可以按 Esc 键从命令行模式切换回普通模式。</p>
+<p>操作缓冲区文本的 Ex 命令表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">:[range]delete [x]</td>
+<td style="text-align:left">删除指定范围内的行[到寄存器x 中]</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]yank [x]</td>
+<td style="text-align:left">复制指定范围的行[到寄存器x 中]</td>
+</tr>
+<tr>
+<td style="text-align:left">:[line]put [x]</td>
+<td style="text-align:left">在指定行后粘贴寄存器x 中的内容</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]copy {address}</td>
+<td style="text-align:left">把指定范围内的行拷贝到{address} 所指定的行之下</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]move {address}</td>
+<td style="text-align:left">把指定范围内的行移动到{address} 所指定的行之下</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]join</td>
+<td style="text-align:left">连接指定范围内的行</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]normal {commands}</td>
+<td style="text-align:left">对指定范围内的每一行执行普通模式命令{commands}</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]substitute/{pattern}/{string}/[flags]</td>
+<td style="text-align:left">把指定范围内出现{pattern}的地方替换为{string}</td>
+</tr>
+<tr>
+<td style="text-align:left">:[range]global/{pattern}/[cmd]</td>
+<td style="text-align:left">对指定范围内匹配{pattern}的所有行，在其上执行 Ex 命令{cmd}</td>
+</tr>
+</tbody>
+</table>
+<h4 id="在一行或多个连续行上执行命令"><a href="#在一行或多个连续行上执行命令" class="headerlink" title="在一行或多个连续行上执行命令"></a>在一行或多个连续行上执行命令</h4><p>:1 会跳转到第一行，:5 会跳转到第五行。如果你执行的是 :3d 命令，那么只需一条命令就可以跳到第三行并删除此行；</p>
+<p>我们也可以用行号指定一个范围，形式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:&#123;start&#125;,&#123;end&#125;</span><br></pre></td></tr></table></figure>
+<p>符号. 代表当前行的地址。因此，我们可以很容易地写出一个范围，用以代表从当前位置到文件末尾间的所有行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:.,$p</span><br></pre></td></tr></table></figure>
+<p>符号 % 也有特殊含义，它代表当前文件中的所有行。</p>
+<p>用模式指定范围，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:/&lt;html&gt;/,/&lt;\/html&gt;/p</span><br></pre></td></tr></table></figure>
+<p>用偏移对地址进行修正，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:/&lt;html&gt;/+1,/&lt;\/html&gt;/-1p</span><br></pre></td></tr></table></figure>
+<p>下表对用来构建 Ex 命令的地址及范围的符号进行了总结：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">符号</th>
+<th style="text-align:left">地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">文件的第一行</td>
+</tr>
+<tr>
+<td style="text-align:left">$</td>
+<td style="text-align:left">文件的最后一行</td>
+</tr>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">虚拟行，位于文件第一行上方</td>
+</tr>
+<tr>
+<td style="text-align:left">.</td>
+<td style="text-align:left">光标所在行</td>
+</tr>
+<tr>
+<td style="text-align:left">‘m</td>
+<td style="text-align:left">包含位置标记 m 的行</td>
+</tr>
+<tr>
+<td style="text-align:left">‘&lt;</td>
+<td style="text-align:left">高亮选区的起始行</td>
+</tr>
+<tr>
+<td style="text-align:left">‘&gt;</td>
+<td style="text-align:left">高亮选区的结束行</td>
+</tr>
+<tr>
+<td style="text-align:left">%</td>
+<td style="text-align:left">整个文件（:1,$ 的简写形式）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="复制和移动行"><a href="#复制和移动行" class="headerlink" title="复制和移动行"></a>复制和移动行</h4><p>:copy 命令（及其简写形式 :t）让我们可以把一行或多行从文档的一部分复制到另一部分，而 :move 命令则可以让我们把一行或多行移到文档的其他地方。</p>
+<p>copy 命令的格式如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:[range]copy &#123;address&#125;</span><br></pre></td></tr></table></figure>
+<p>下表展示了 :t 命令的一些应用实例：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">:6t.</td>
+<td style="text-align:left">把第6 行复制到当前行下方</td>
+</tr>
+<tr>
+<td style="text-align:left">:t6</td>
+<td style="text-align:left">把当前行复制到第6 行下方</td>
+</tr>
+<tr>
+<td style="text-align:left">:t.</td>
+<td style="text-align:left">为当前行创建一个副本（类似于普通模式下的yyp）</td>
+</tr>
+<tr>
+<td style="text-align:left">:t$</td>
+<td style="text-align:left">把当前行复制到文本结尾</td>
+</tr>
+<tr>
+<td style="text-align:left">:’&lt;,’&gt;t0</td>
+<td style="text-align:left">把高亮选中的行复制到文件开头</td>
+</tr>
+</tbody>
+</table>
+<p>:move 命令看上去和 :copy 命令很相似，可以把它简写为一个字母:m。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:[range]move &#123;address&#125;</span><br></pre></td></tr></table></figure>
+<p>‘&lt;,’&gt; 代表了高亮选区。因此我们可以很容易地选中另外一个高亮选区，然后重复执行:’&lt;,’&gt;m$ 命令把选中的文本移到文件结尾。重复上次的 Ex 命令非常简单，只需按@:。</p>
+<h4 id="在指定范围上执行普通模式命令"><a href="#在指定范围上执行普通模式命令" class="headerlink" title="在指定范围上执行普通模式命令"></a>在指定范围上执行普通模式命令</h4><p>有如下例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var foo = 1</span><br><span class="line">var bar = &apos;a&apos;</span><br><span class="line">var baz = &apos;z&apos;</span><br><span class="line">var foobar = foo + bar</span><br><span class="line">var foobarbaz = foo + bar + baz</span><br></pre></td></tr></table></figure>
+<p>如果要给每一行后面添加 ;。可以先在第一行上 <code>A;&lt;Esc&gt;</code>。接下来用不着每一行执行 . 命令，可以先高亮第 2 行到末尾，<code>jVG</code>,然后在输入 <code>:&#39;&lt;,&#39;&gt;normal .</code>。</p>
+<p>也可以使用下面命令解决上面问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:%normal A;</span><br></pre></td></tr></table></figure>
+<p>【参考资料】</p>
+<ol>
+<li><a href="http://book.douban.com/subject/25869486/" target="_blank" rel="noopener">Vim实用技巧</a></li>
+</ol>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/vim-学习笔记/">vim 学习笔记</a></div><div class="post-nav"><a class="pre" href="/2014/12/30/jvm-gc/">Jvm垃圾收集算法</a><a class="next" href="/2014/12/29/effectivejava-learn1/">effective-java创建和销毁对象</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>jdk 工具 javac 命令1 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">jdk 工具 javac 命令1</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">jdk 工具 javac 命令1</h1><div class="post-meta">Dec 9, 2014<span> | </span><span class="category"><a href="/categories/java基础/">java基础</a></span></div><div class="post-content"><p>javac 命令，javac 命令是 Java programming language compiler 的简写。</p>
+<h4 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h4><p>javac 的语法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac [ options ] [ sourcefiles ] [ classes ] [ <span class="meta">@argfiles</span> ]</span><br></pre></td></tr></table></figure>
+<p>参数可以在任何顺序。</p>
+<ul>
+<li>options ： 命令行参数</li>
+<li>sourcefiles ： 一个或者多个需要编译的原文件(MyJava.java)</li>
+<li>classes ： 要处理一个或多个类的注解( MyPackage.MyClass)</li>
+<li>@argfiles ： 一个或多个文件，该目录选项和源文件。</li>
+</ul>
+<h4 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h4><p>javac 工具将 java 源代码编译成字节码。他也可以处理 java 源文件或者 class 文件中的注解。</p>
+<p>有两种方式把源文件名字传到 javac：</p>
+<ul>
+<li>对于少数的源文件，简单地列出在命令行上的文件名。</li>
+<li>对于大量的源文件，在一个新文件当中列出文件的文件名，用空格或换行分隔。使用这个新文件的名字传入到 javac 当中，并且名字前面加上<code>@</code>字符。</li>
+</ul>
+<p>源文件是以 .java 结尾的文件，字节码文件是 .class 结尾的文件，名且这2个文件的名字是对应的。例如，有个类叫 Test，那么原文件是 Test.java 编译后的文件是 Test.class。</p>
+<p>内部类处理成附加的 class 文件。类文件的名字是组合了内部类和外部类的名字，例如：MyClass$MyInnerClass.class。</p>
+<p>源文件可能是在对应包的目录树当中。例如，你将源代码放在 /workspace 下，包名是 com.mysoft.mypack.MyClass ，那么你的源文件应该在 /workspace/com/mysoft/mypack/MyClass.java 。</p>
+<p>默认情况下，编译后的文件与源文件在同一个目录。你也可以使用 -d 参数来指定目录。</p>
+<h4 id="options"><a href="#options" class="headerlink" title="options"></a>options</h4><p>编译器有一组正在对当前的开发环境的支持，并会在以后的版本中支持的标准选项。一组额外的非标准的选项是特定于当前虚拟机和编译器实现的，并有可能在未来发生变化。非标准选项开始 -X。</p>
+<h4 id="标准选项"><a href="#标准选项" class="headerlink" title="标准选项"></a>标准选项</h4><ul>
+<li><p>-A key[=value] ： 选项传递给注释处理器。这些不被 javac 的直接解释的，但对于由单独的处理器使用的情况下。密钥必须由分离的一个或多个标识符“.” 。</p>
+</li>
+<li><p>-cp path or -classpath path ： 指定查找用户类文件和（可选）的注解处理器和源文件。这个类路径覆盖 CLASSPATH 环境变量中的用户类路径。如果没有使用 -cp 或 -classpath 指定 CLASSPATH，则用户类路径为当前目录。</p>
+<ul>
+<li>如果没有指定 -sourcepath 选项，用户类路径也搜索源文件。</li>
+<li>如果没有指定 -processorpath 选项，类路径也搜索注释处理器。</li>
+</ul>
+</li>
+<li><p>-Djava.ext.dirs=directories ： 覆盖安装扩展的位置。</p>
+</li>
+<li><p>-Djava.endorsed.dirs=directories ： 覆盖认可的标准路径的位置。</p>
+</li>
+<li><p>-d directory ： 设置 class 文件的输出目录。指定的目录必须是存在的。javac 不会创建它。如果类是包中的，javac 会自动创建他的子目录，如果你指定 -d /home/myclasses，并且有个类文件是 com.mypackage.MyClass，那么这个类文件的全路径是 /home/myclasses/com/mypackage/MyClass.class。</p>
+<ul>
+<li>注意：-d 参数指定的目录不会自动添加到用户 claapath 下。</li>
+</ul>
+</li>
+<li><p>-deprecation ： 显示每个使用废弃成员或阶层或覆盖的说明。没有-deprecation ， javac的显示，使用或替代过时的成员或类的源文件的内容摘要。 -deprecation 是 -Xlint:deprecation 的简写。</p>
+</li>
+<li><p>-encoding encoding ： 设置编码方式。如果不指定平台使用默认的编码方式。</p>
+</li>
+<li><p>-endorseddirs directories ： 覆盖认可的标准路径的位置。</p>
+</li>
+<li><p>-extdirs directories ： 覆盖 ext 目录的位置。目录变量是目录的冒号分隔的列表。在指定的目录中的每个 JAR 文件中搜索类文件。发现所有 JAR 文件是自动的类路径的一部分。</p>
+</li>
+<li><p>-g ： 生成所有调试信息，包括局部变量。默认情况下，只生成行号和源文件信息。</p>
+</li>
+<li><p>-g:none ： 不产生任何调试信息。</p>
+</li>
+<li><p>-g:{keyword list} ： 只生成某些类型的调试信息，用逗号分隔的关键字列表中指定。有效的关键字为：</p>
+<ul>
+<li>source ： 源文件调试信息</li>
+<li>lines ： 行号调试信息</li>
+<li>vars ： 局部变量调试信息</li>
+</ul>
+</li>
+<li><p>-help ： 打印标准选项的概要。</p>
+</li>
+<li><p>-implicit:{class,none} ： 控制生成的类文件的隐式加载的源文件。自动生成的类文件，使用 -implicit:class。为了抑制类文件生成，使用 -implicit:none。如果未指定此选项，默认是自动生成的类文件。在这种情况下，编译器会发出警告，如果产生任何这样的类文件时也做注释处理。如果此选项明确设置警告不会发出。</p>
+</li>
+<li><p>-Joption ： 通过调用 javac 给 java 命令传递参数。例如： -J-Xms48m 设置启动内存48M。这是 -J 将选项传递给 Java 编写的底层虚拟机执行应用程序的共同约定。</p>
+</li>
+<li><p>-nowarn ： 禁用警告消息。这具有相同的含义-Xlint:none。</p>
+</li>
+<li><p>-proc: {none,only} : 控制是否注释处理和/或编译完成。 -proc:none 指编译发生无注释处理。 -proc:only 意味着，只有标注处理完成，没有任何后续的编译。</p>
+</li>
+<li><p>-processor class1[,class2,class3…] ： 注释处理器的名称来运行。这绕过默认的发现过程。</p>
+</li>
+<li><p>-processorpath path ： 指定在哪里可以找到注释处理器;如果不使用此选项，在类路径中搜索处理器。</p>
+</li>
+<li><p>-s dir ： 指定放置生成的源文件的目录。该目录必须已经存在; javac 的不会创建它。如果一个类是一个包的一部分，编译器通过子目录反映包名，会根据需要创建子目录。例如：指定 -s /home/mysrc，并且类是 com.mypackage.MyClass，那么源文件应该在 /home/mysrc/com/mypackage/MyClass.java。</p>
+</li>
+<li><p>-source release ： 指定的源代码被接受的版本。允许发布以下值：1.3，1.4，1.5，5，1.6，6，1.7，7</p>
+</li>
+<li><p>-sourcepath sourcepath ： 指定要搜索的类或接口定义的源代码路径。与用户类路径，源路径项用冒号(:)分隔，可以是目录，JAR 文件，或 ZIP 文件。如果包被使用，本地路径名的目录或档案中必须反映包名。</p>
+</li>
+<li><p>-verbose ： 详细的输出。这包括每个类加载和编译每个源文件的信息。</p>
+</li>
+<li><p>-version ： 打印版本信息。</p>
+</li>
+<li><p>-Werror ： 终止编译，如果出现警告。</p>
+</li>
+<li><p>-X ： 显示非标准选项和退出信息。</p>
+</li>
+</ul>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/笔记/">笔记</a></div><div class="post-nav"><a class="pre" href="/2014/12/11/java-concurrenct-learn1/">Java并发学习1</a><a class="next" href="/2014/12/05/bash-short-key/">bash 快捷键</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>TCP 部首的简单学习 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">TCP 部首的简单学习</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">TCP 部首的简单学习</h1><div class="post-meta">Jul 18, 2016<span> | </span><span class="category"><a href="/categories/tcp-ip/">tcp/ip</a></span></div><div class="post-content"><h2 id="TCP-的部首"><a href="#TCP-的部首" class="headerlink" title="TCP 的部首"></a>TCP 的部首</h2><p><img src="https://renchunxiao.com/public/images/tcp-head.png" alt=""></p>
+<ul>
+<li><p>每个 TCP 都包含源端口和目的端口，这两个值加上 IP 部首当中的源 IP 和目的 IP 地址唯一确定到一个 TCP 链接。</p>
+</li>
+<li><p>一个 IP 地址和一个端口号也称为一个插口( socket )。</p>
+</li>
+<li><p>序号标识从 TCP 发端到 TCP 收端的数据字节流，序号是 32 位的无符号数，到达了 2^32 - 1 后从 0 开始。</p>
+</li>
+<li><p>确认序号应当是上次已成功收到数据字节序号加 1。只有 ACK 为 1 时候确认号才有效。</p>
+</li>
+<li><p>首部长度给出TCP首部的字节数目。需要这个值是因为任选字段的长度是可变的。保留：6bit, 均为0。</p>
+</li>
+<li><p>TCP首部中有6个标志位。</p>
+<ul>
+<li>URG：紧急指针有效标志位，当它被置为1时，紧急指针才有效。</li>
+<li>ACK：确认序号有效，当它被置为1时，确认序号才有效。</li>
+<li>PSH：接受方应该尽快将这个报文交给应用层。</li>
+<li>RST：重建连接。</li>
+<li>SYN：同步序号用来发起一个新连接。</li>
+<li>FIN：发端完成发送任务。</li>
+</ul>
+</li>
+<li><p>窗口大小来进行TCP的流量控制。窗口大小为字节数，起始于确认序号字段指明的值，这个值是接受端期望接受的字节。</p>
+</li>
+<li><p>检验和覆盖了整个的TCP报文段：TCP首部和TCP数据。这是一个强制性的字段，一定由发端进行计算和存储，并由收端进行检验。</p>
+</li>
+<li><p>紧急指针是一个正的偏移量，和序号字段中的值相加表示紧急数据最后一个字节的序号。TCP的紧急方式是发送端向另一端发送紧急数据的一种方式。</p>
+</li>
+</ul>
+<h2 id="TCP-创建握手"><a href="#TCP-创建握手" class="headerlink" title="TCP 创建握手"></a>TCP 创建握手</h2><p><img src="https://renchunxiao.com/public/images/tcp-create.png" alt=""></p>
+<ul>
+<li><p>第一次握手：客户端向服务器发送连接请求包，标志位SYN（同步序号）置为1，序号为X</p>
+</li>
+<li><p>第二次握手：服务器收到客户端发过来报文，由SYN=1知道客户端要求建立联机。向客户端发送一个SYN和ACK都置为1的TCP报文，设置初始序号 Y，将确认序号(ack)设置为客户的序列号加1，即 X+1。</p>
+</li>
+<li><p>第三次握手：客户端收到服务器发来的包后检查确认序号(ack)是否正确，即第一次发送的序号加1（X+1）。以及标志位ACK是否为1。若正确，客户端再次发送确认包，ACK标志位为1，SYN标志位为0。确认序号(ack) Y+1，发送序号为X+1=1。客户端收到后确认序号值与ACK=1则连接建立成功，可以传送数据了。</p>
+</li>
+</ul>
+<h2 id="TCP-端开链接"><a href="#TCP-端开链接" class="headerlink" title="TCP 端开链接"></a>TCP 端开链接</h2><p><img src="https://renchunxiao.com/public/images/tcp-break.png" alt=""></p>
+<ul>
+<li><p>第一次挥手：客户端给服务器发送TCP包，用来关闭客户端到服务器的数据传送。将标志位FIN和ACK置为1，序号为X，确认序号(ack)为Z。</p>
+</li>
+<li><p>第二次挥手：服务器收到FIN后，发回一个ACK(标志位ACK=1),确认序号为收到的序号加1，即(ack)X+1。序号为收到的确认序号Z。</p>
+</li>
+<li><p>第三次挥手：服务器关闭与客户端的连接，发送一个FIN。标志位FIN和ACK置为1，序号为Y ，确认序号为X+1。</p>
+</li>
+<li><p>第四次挥手：客户端收到服务器发送的FIN之后，发回ACK确认(标志位ACK=1),确认序号为收到的序号加1，即Y+1。序号为收到的确认序号X+1。</p>
+</li>
+</ul>
+<p>【参考资料】</p>
+<ol>
+<li><p><a href="http://www.seanyxie.com/wireshark%E6%8A%93%E5%8C%85%E5%9B%BE%E8%A7%A3-tcp%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E8%AF%A6%E8%A7%A3/" target="_blank" rel="noopener">http://www.seanyxie.com/wireshark%E6%8A%93%E5%8C%85%E5%9B%BE%E8%A7%A3-tcp%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E8%AF%A6%E8%A7%A3/</a></p>
+</li>
+<li><p><a href="https://book.douban.com/subject/1088054/" target="_blank" rel="noopener">TCP/IP详解 卷1：协议</a></p>
+</li>
+</ol>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/笔记-tcp-ip协议/">笔记, tcp/ip协议</a></div><div class="post-nav"><a class="pre" href="/2016/07/20/tcpstatus/">TCP 状态转移以及一些概念</a><a class="next" href="/2016/04/25/javanio-channel3/">Java NIO 之 Channel 下</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

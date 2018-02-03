@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>shell当中的if-else语句 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">shell当中的if-else语句</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">shell当中的if-else语句</h1><div class="post-meta">Nov 6, 2014<span> | </span><span class="category"><a href="/categories/linux/">linux</a></span></div><div class="post-content"><h4 id="if-then语句"><a href="#if-then语句" class="headerlink" title="if-then语句"></a>if-then语句</h4><p>if-then语句的格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">if</span></span><br></pre></td></tr></table></figure>
+<p>bash shell的if语句会执行if行定义的那个命令，如果该命令正常退出(退出状态码是0)，则then部分的命令就会执行。</p>
+<p>例如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="keyword">if</span> date</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"asd"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>这个例子，会先执行date命令，如果date命令执行成功，则会执行echo命令，所以运行结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Wed Nov  5 19:54:38 CST 2014</span><br><span class="line">asd</span><br></pre></td></tr></table></figure>
+<p>if-then语句也有如下的形式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>if后面的命令加上一个分号，这样then可以与if在同一行。</p>
+<h4 id="if-then-else语句"><a href="#if-then-else语句" class="headerlink" title="if-then-else语句"></a>if-then-else语句</h4><p>if-then-else的语句结构如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">或者</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h4 id="嵌套if"><a href="#嵌套if" class="headerlink" title="嵌套if"></a>嵌套if</h4><p>嵌套if的语句结构如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">或者</span><br><span class="line"><span class="keyword">if</span> command1; <span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">elif</span> command2; <span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h4 id="test命令"><a href="#test命令" class="headerlink" title="test命令"></a>test命令</h4><p>test命令提供了在if-then语句当中测试不同条件的途径。使用方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>bash shell 提供了另外一种if-then语句中声明test命令的方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ condition ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>方括号当中是条件，并且条件和方括号之间有一个空格。</p>
+<p>test命令可以判断3类条件：</p>
+<ul>
+<li>数值比较</li>
+<li>字符串比较</li>
+<li>文本比较</li>
+</ul>
+<h5 id="数值比较"><a href="#数值比较" class="headerlink" title="数值比较"></a>数值比较</h5><p>数值比较功能表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">比较</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">n1 -eq n2</td>
+<td style="text-align:left">n1 == n2</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -ge n2</td>
+<td style="text-align:left">n1 &gt;= n2</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -gt n2</td>
+<td style="text-align:left">n1 &gt; n2</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -le n2</td>
+<td style="text-align:left">n1 &lt;= n2</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -lt n2</td>
+<td style="text-align:left">n1 &lt; n2</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -ne n2</td>
+<td style="text-align:left">n1 != n2</td>
+</tr>
+</tbody>
+</table>
+<p>数值条件测试可以用在数字和变量上。例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=2</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$a</span> -gt 5 ]</span><br></pre></td></tr></table></figure>
+<h5 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h5><p>test命令也可以比较字符串值。如下所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">比较</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">str1 = str2</td>
+<td style="text-align:left">比较相等</td>
+</tr>
+<tr>
+<td style="text-align:left">str1 != str2</td>
+<td style="text-align:left">比较不相等</td>
+</tr>
+<tr>
+<td style="text-align:left">str1 &gt; str2</td>
+<td style="text-align:left">str1大于str2</td>
+</tr>
+<tr>
+<td style="text-align:left">str1 &lt; str2</td>
+<td style="text-align:left">str1小于str2</td>
+</tr>
+<tr>
+<td style="text-align:left">-n str1</td>
+<td style="text-align:left">检查str1的长度是否非0</td>
+</tr>
+<tr>
+<td style="text-align:left">-z str1</td>
+<td style="text-align:left">检查str1的长度是否为0</td>
+</tr>
+</tbody>
+</table>
+<p>在字符串比较大小的时候 <code>&gt;</code> 和 <code>&lt;</code> 必须经过转义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str1=ad</span><br><span class="line">str2=we</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$str1</span> \&gt; <span class="variable">$str2</span> ]</span><br></pre></td></tr></table></figure>
+<p>sort命令处理大写字幕的方法正好跟test命令的相反。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line">s1=Test</span><br><span class="line">s2=<span class="built_in">test</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$s1</span> \&gt; <span class="variable">$s2</span> ]; <span class="keyword">then</span></span><br><span class="line"> <span class="built_in">echo</span> <span class="string">"s1 &gt; s2"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"> <span class="built_in">echo</span> <span class="string">"s1 &lt; s2"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">&gt; ./te.sh <span class="comment">#执行脚本</span></span><br><span class="line">s1 &lt; s2</span><br></pre></td></tr></table></figure>
+<p>但是sort排序的时候test会出现在Test上面。</p>
+<p>当空串和未初始化的变量在<code>if [ -n &quot;$var&quot; ]</code>的时候都不会执行它的then语句，但是会执行<code>if [ -z &quot;$var&quot; ]</code>的then语句。</p>
+<h5 id="文件比较"><a href="#文件比较" class="headerlink" title="文件比较"></a>文件比较</h5><p>test命令允许你测试Linux系统上文件和目录的状态。如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">比较</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">-d file</td>
+<td style="text-align:left">检查file是否存在并且是一个目录</td>
+</tr>
+<tr>
+<td style="text-align:left">-e file</td>
+<td style="text-align:left">检查file是否存在</td>
+</tr>
+<tr>
+<td style="text-align:left">-f file</td>
+<td style="text-align:left">检查file是否存在并且是一个文件</td>
+</tr>
+<tr>
+<td style="text-align:left">-r file</td>
+<td style="text-align:left">检查file是否存在并且可读</td>
+</tr>
+<tr>
+<td style="text-align:left">-s file</td>
+<td style="text-align:left">检查file是否存在并且非空</td>
+</tr>
+<tr>
+<td style="text-align:left">-w file</td>
+<td style="text-align:left">检查file是否存在并且可写</td>
+</tr>
+<tr>
+<td style="text-align:left">-x file</td>
+<td style="text-align:left">检查file是否存在并且可执行</td>
+</tr>
+<tr>
+<td style="text-align:left">-O file</td>
+<td style="text-align:left">检查file是否存在并且所有者是当前用户</td>
+</tr>
+<tr>
+<td style="text-align:left">-G file</td>
+<td style="text-align:left">检查file是否存在并且所属组与当前用户相同</td>
+</tr>
+<tr>
+<td style="text-align:left">file1 -nt file2</td>
+<td style="text-align:left">检查file1是否比file2新</td>
+</tr>
+<tr>
+<td style="text-align:left">file1 -ot file2</td>
+<td style="text-align:left">检查file1是否比file2旧</td>
+</tr>
+</tbody>
+</table>
+<h4 id="复合条件测试"><a href="#复合条件测试" class="headerlink" title="复合条件测试"></a>复合条件测试</h4><p>if-then语句当中允许使用布尔逻辑来组合测试。有两种情况：</p>
+<ul>
+<li>[ condition1 ] &amp;&amp; [ condition2 ]</li>
+<li>[ condition1 ] || [ condition2 ]</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ condition1 ] &amp;&amp; [ condition2 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ condition1 ] || [ condition2 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h4 id="if-then高级特性"><a href="#if-then高级特性" class="headerlink" title="if-then高级特性"></a>if-then高级特性</h4><ul>
+<li>用于数学表达式的双小括号</li>
+<li>用于高级字符串处理功能的双方括号</li>
+</ul>
+<p>使用双小括号格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(( expression ))</span><br></pre></td></tr></table></figure>
+<p>支持的运算如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">符号</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">val++</td>
+<td style="text-align:left">后增</td>
+</tr>
+<tr>
+<td style="text-align:left">val–</td>
+<td style="text-align:left">后减</td>
+</tr>
+<tr>
+<td style="text-align:left">++val</td>
+<td style="text-align:left">前增</td>
+</tr>
+<tr>
+<td style="text-align:left">–val</td>
+<td style="text-align:left">前减</td>
+</tr>
+<tr>
+<td style="text-align:left">!</td>
+<td style="text-align:left">逻辑求反</td>
+</tr>
+<tr>
+<td style="text-align:left">~</td>
+<td style="text-align:left">位求反</td>
+</tr>
+<tr>
+<td style="text-align:left">**</td>
+<td style="text-align:left">幂运算</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;&lt;</td>
+<td style="text-align:left">左移位</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;&gt;</td>
+<td style="text-align:left">右移位</td>
+</tr>
+<tr>
+<td style="text-align:left">&amp;</td>
+<td style="text-align:left">位运算与</td>
+</tr>
+<tr>
+<td style="text-align:left">一个竖线</td>
+<td style="text-align:left">位运算或</td>
+</tr>
+<tr>
+<td style="text-align:left">&amp;&amp;</td>
+<td style="text-align:left">逻辑与</td>
+</tr>
+<tr>
+<td style="text-align:left">两个竖线</td>
+<td style="text-align:left">逻辑或</td>
+</tr>
+</tbody>
+</table>
+<p>具体使用如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val=10</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (( <span class="variable">$val</span> ** 2 &gt; 90 ))</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>并且在双小括号里面的大于号不需要转义。</p>
+<p>使用双方括号提供了针对字符串比较的高级特性，使用方式如下：</p>
+<p>[[ expression ]]</p>
+<p>它提供了一个模式匹配的功能，可以定义正则表达式来匹配字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ <span class="variable">$USER</span> == chun* ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"hello <span class="variable">$USER</span>"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h4 id="case命令"><a href="#case命令" class="headerlink" title="case命令"></a>case命令</h4><p>case的命令格式如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> var <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2) command1;;</span><br><span class="line">pattern3) command2;;</span><br><span class="line">*) defaultCommands;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+<p>下面是个简单的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">v=chunxiao</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="variable">$v</span> <span class="keyword">in</span></span><br><span class="line">  chun | asew)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"a"</span>;;</span><br><span class="line">  asdd2)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"b"</span>;;</span><br><span class="line">  *)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"c"</span>;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/linux-shell/">linux shell</a></div><div class="post-nav"><a class="pre" href="/2014/11/07/linux-shell-learn3/">shell当中的循环</a><a class="next" href="/2014/11/04/linux-shell-leran1/">构建基本shell脚本</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>Java异常 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java异常</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java异常</h1><div class="post-meta">Jan 8, 2015<span> | </span><span class="category"><a href="/categories/java基础/">java基础</a></span></div><div class="post-content"><p>异常的分类如下图：</p>
+<p><img src="https://renchunxiao.com/public/images/java-exception.png" alt="java-exception"></p>
+<p>在程序当中我们需要关注 Exception 层次结构。</p>
+<p>Java 将异常分为两类：</p>
+<ul>
+<li>未检查异常：派生于 RuntimeException 和 Error 类的所有异常。</li>
+<li>已检查异常：除去未检查异常的其他异常。</li>
+</ul>
+<p>遇到如下四种情况的时候会抛出异常：</p>
+<ul>
+<li>调用一个抛出已检查异常的方法</li>
+<li>使用 throw 语句抛出一个异常</li>
+<li>程序出现未检查异常</li>
+<li>Java 虚拟机和运行时库出现的内部异常</li>
+</ul>
+<p>出现前两种情况之一，则必须告诉调用这个方法的程序员有可能抛出异常。</p>
+<p>子类覆盖了父类的一个方法，子类方法中声明的已检查异常不能超过父类方法中声明的异常范围。子类可以不抛出异常或者抛出父类异常的子类异常。</p>
+<h4 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h4><p>捕获异常需要使用 try/catch 语句块。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 try 语句块中的任何代码抛出一个在 catch 子句中指定的异常，那么</p>
+<ul>
+<li>程序将跳过 try 语句块中的其余代码</li>
+<li>程序将执行 catch 子句中的代码</li>
+</ul>
+<p>如果 try 语句块中的任何代码没有抛出任何异常，那么程序跳过 catch 子句</p>
+<p><strong>注意：</strong></p>
+<p><strong>正常结束</strong>：如果所有步骤都正常执行，没有突然结束，则称这个语句正常结束。</p>
+<p><strong>突然结束</strong>：语句在正常执行完所有步骤前终止，称为突然结束。</p>
+<p>突然结束有如下几个原因：</p>
+<ul>
+<li>break</li>
+<li>continue</li>
+<li>return</li>
+<li>throw 异常，包括虚拟机异常</li>
+</ul>
+<h5 id="try-catch-的执行："><a href="#try-catch-的执行：" class="headerlink" title="try/catch 的执行："></a>try/catch 的执行：</h5><ul>
+<li>如果 try 块的执行正常结束，那么就不采取任何进一步操作，try 块正常结束</li>
+<li>如果 try 块执行抛出异常 V，那么：<ul>
+<li>若异常 V 可以匹配到 catch 子句，那么第一个被匹配的 catch 子句会执行。如果这个匹配的 catch 块正常结束，那么 try 块也正常结束。如果这个匹配的 catch 块出于任何原因突然结束，那么 try 语句以相同的原因突然结束。</li>
+<li>若异常 V 没有匹配的 catch 子句，那么 try 语句就由于抛出值 V 而突然结束。</li>
+</ul>
+</li>
+<li>如果 try 块执行出于任何其他原因而突然结束，那么 try 语句就出于相同的原因突然结束。</li>
+</ul>
+<p>当代码抛出一个异常时，就会终止对方法剩余代码的处理，如果方法中获取了一些资源，就会引发资源回收问题，我们可以使用 finally 块来关闭资源。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="try-catch-finally-的执行："><a href="#try-catch-finally-的执行：" class="headerlink" title="try/catch/finally 的执行："></a>try/catch/finally 的执行：</h5><ul>
+<li>如果 try 块的执行突然结束，那么 finally 块就被执行，然后进行如下选择：<ul>
+<li>如果 finally 块突然结束，那么 try 语句就正常结束</li>
+<li>如果 finally 块由于原因 S 突然结束，那么 try 语句就由于原因 S 突然结束</li>
+</ul>
+</li>
+<li>如果 try 块抛出异常 V 突然结束，那么进行如下选择：<ul>
+<li>如果能匹配到 catch 块，则执行 catch 块，并且进行如下选择：<ul>
+<li>如果 catch 块正常结束，那么就执行 finally 块，然后进行如下选择：<ul>
+<li>如果 finally 块正常结束，那么 try 语句就正常结束</li>
+<li>如果 finally 块由于原因 S 突然结束，那么 try 语句就由于原因 S 突然结束</li>
+</ul>
+</li>
+<li>如果 catch 块由于原因 R 突然结束，那么 finally 块被执行，然后进行如下选择：<ul>
+<li>如果 finally 块正常结束，那么 try 语句就由于原因 R 突然结束</li>
+<li>如果 finally 块由于原因 S 突然结束，那么 try 语句就由于原因 S 突然结束，并且原因 R 被丢弃</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如果 V 没有被任何 catch 子句匹配，那么就执行 finally 块，然后进行如下选择：<ul>
+<li>如果 finally 块正常结束，那么 try 语句就由于抛出异常 V 突然结束</li>
+<li>如果 finally 块由于原因 S 突然结束，那么 try 语句就由于原因 S 突然结束，并且原因 V 被丢弃</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如果 try 块的执行出于任何其他原因 R 而突然结束，那么 finally 被执行，并且进行如下选择：<ul>
+<li>如果 finally 块突然结束，那么 try 语句就由于原因 R 突然结束</li>
+<li>如果 finally 块由于原因 S 突然结束，那么 try 语句就由于原因 S 突然结束，并且原因 R 被丢弃</li>
+</ul>
+</li>
+</ul>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/笔记/">笔记</a></div><div class="post-nav"><a class="pre" href="/2015/01/09/linux-shell-learn5/">shell 处理文件描述符</a><a class="next" href="/2015/01/07/redis-learn3/">redis列表类型</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

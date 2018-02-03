@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>js词法结构和类型 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">js词法结构和类型</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">js词法结构和类型</h1><div class="post-meta">Nov 15, 2014<span> | </span><span class="category"><a href="/categories/js基础/">js基础</a></span></div><div class="post-content"><h4 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h4><p>js程序是用Unicode字符集编写的。并且js的区分大小写的语言。需要注意的是html并不区分大小写。例如，在html中设置时间处理onclick属性可以写成onClick，但是在js当中只可以写成onclick。</p>
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>js支持两种注释方式。//之后到行尾的文本会被当成注释。还有在<code>/*</code>和<code>*/</code>之间的文本被当作注释。</p>
+<h4 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h4><p>js当中的标识符必须以字母、下划线或者美元符开头，后续的字符可以是字母、数字、下划线或者美元。</p>
+<h4 id="可选的分号"><a href="#可选的分号" class="headerlink" title="可选的分号"></a>可选的分号</h4><p>和其他语言一样，js使用分号将语句隔开。在js中如果语句独占一行，那么分号可以省略。</p>
+<p>一般会在行结尾加上分号，避免js自动添加分号引发其他问题。</p>
+<h4 id="类型、值和变量"><a href="#类型、值和变量" class="headerlink" title="类型、值和变量"></a>类型、值和变量</h4><p>js的数据类型分为两种：原始类型和对象类型。</p>
+<p>原始类型包括数字、字符串和布尔值。以及两个特殊的原始值：null和undefined。</p>
+<p>对象类型是除了原始类型外的都是对象类型。</p>
+<p>js中的变量是无类型，变量可以被赋予任何类型的值。使用var关键字来声明变量。</p>
+<h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><p>js不区分整数和浮点数。js当中的所有数字都使用浮点数来表示。</p>
+<p>除了十进制的整型直接量，js也可以识别十六进制值、以0x或者0X开头后面跟随0~9和a-fA-F构成。</p>
+<p>浮点数的简洁语法表示如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[digits][.digits][(E|e)[(+|-)]digits]</span><br><span class="line"></span><br><span class="line"><span class="comment">//例如</span></span><br><span class="line"><span class="number">3.14</span></span><br><span class="line"><span class="number">.14</span></span><br><span class="line"><span class="number">6.12e23</span></span><br><span class="line"><span class="number">1.47E-23</span></span><br></pre></td></tr></table></figure>
+<p>js提供的数字运算有5种，+、-、*、/、%。</p>
+<p>也可以使用Math对象来进行一些运算：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">4</span>); <span class="comment">//2的4次幂</span></span><br><span class="line"><span class="built_in">Math</span>.abs(<span class="number">-5</span>); <span class="comment">//-5的绝对值</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>当js中运算溢出时候不会报错，当操作js所能表示的最大值使用Infinity表示。同样，当负数超过了js能表示的范围使用-Infini<br>ty表示。基于他们的加、减、乘除运算结果还是无穷大(并且保留正负号)。</p>
+<p>零除以零是没有意义的，会返回NaN(not a number)。</p>
+<p>js当中预定义了全局变量Infinity和NaN，原来表示正无穷大和非数字值。</p>
+<p>js中的NaN很特殊，它和任何值都不相等，包括自身。所以要判断x是否为NaN不可以使用x==NaN，但是可以使用x!=x来判断，只有当x的NaN的时候这个表达式才会返回true。</p>
+<h4 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h4><p>字符串是一组由16位值组成的不可变的有序序列，每个字符通常来自于Unicode字符集。</p>
+<p>js中字符串直接量是由单引号或者双引号括起来的字符序列。如下几个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'test'</span></span><br><span class="line"><span class="string">"adc"</span></span><br><span class="line"><span class="string">'name="rcx"'</span></span><br><span class="line"><span class="string">"this's is what"</span></span><br></pre></td></tr></table></figure>
+<p>js中的转义字符表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">转义字符</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">\o</td>
+<td style="text-align:left">NUL字符(\u0000)</td>
+</tr>
+<tr>
+<td style="text-align:left">\b</td>
+<td style="text-align:left">退格符(\u0008)</td>
+</tr>
+<tr>
+<td style="text-align:left">\t</td>
+<td style="text-align:left">水平制表符(\u0009)</td>
+</tr>
+<tr>
+<td style="text-align:left">\n</td>
+<td style="text-align:left">换行符(\u000A)</td>
+</tr>
+<tr>
+<td style="text-align:left">\v</td>
+<td style="text-align:left">垂直制表符(\u000B)</td>
+</tr>
+<tr>
+<td style="text-align:left">\f</td>
+<td style="text-align:left">换页符(\u000C)</td>
+</tr>
+<tr>
+<td style="text-align:left">\r</td>
+<td style="text-align:left">回车符(\u000D)</td>
+</tr>
+<tr>
+<td style="text-align:left">\”</td>
+<td style="text-align:left">双引号(\u0022)</td>
+</tr>
+<tr>
+<td style="text-align:left">\’</td>
+<td style="text-align:left">单引号(\u0027)</td>
+</tr>
+<tr>
+<td style="text-align:left">\</td>
+<td style="text-align:left">反斜线(\u005C)</td>
+</tr>
+</tbody>
+</table>
+<p>如果\字符出现在没有转义的字符前，则忽略\。比如#和#是等价的。</p>
+<p>js中的字符串连接和java的处理是相同的可以使用+号。要得到字符串的长度使用s.length属性。以及如下方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">"hello, world"</span></span><br><span class="line">s.charAt(<span class="number">0</span>)</span><br><span class="line">s.substring(<span class="number">1</span>,<span class="number">4</span>)</span><br><span class="line">s.slice(<span class="number">1</span>,<span class="number">4</span>)</span><br><span class="line">s.slice(<span class="number">-3</span>)</span><br><span class="line">s.indexOf(<span class="string">"l"</span>)</span><br><span class="line">s.lastIndexOf(<span class="string">"l"</span>)</span><br><span class="line">s.indexOf(<span class="string">"l"</span>,<span class="number">3</span>)</span><br><span class="line">s.split(<span class="string">", "</span>)</span><br><span class="line">s.replace(<span class="string">"h"</span>, <span class="string">"H"</span>)</span><br><span class="line">s.toUpperCase()</span><br></pre></td></tr></table></figure>
+<p>js中的字符串是不变的，所以replace()和toUpperCase()方法都会返回新字符串，原字符串本身没有发生改变。</p>
+<p>js中定义了RegExp()构造函数，原来创建表示文本匹配模式的对象。成为正则表达式，js采用了Perl中的正则表达式语法。</p>
+<p>在两条斜线之间的文本构成了一个正则表达式直接量。在第二条斜线之后也可以跟随一个或多个字母，原来修饰匹配模式的含义，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/^HTML/</span><br><span class="line">/[<span class="number">1</span><span class="number">-5</span>][<span class="number">0</span><span class="number">-9</span>]/</span><br></pre></td></tr></table></figure>
+<p>RegExp对象定义了很多有用的方法，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">"testing:1,2,3"</span>;</span><br><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^d+/g</span>;</span><br><span class="line">pattern.test(text);</span><br><span class="line">text.serch(pattern);</span><br><span class="line">text.replace(pattern, <span class="string">'#'</span>);</span><br><span class="line">text.split(<span class="regexp">/\D+/</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h4><p>布尔值类型只有两个值，true和false。</p>
+<p>在js当中任何值都可以转换成布尔值，一下值会转换成false。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">undefined</span></span><br><span class="line"><span class="literal">null</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">-0</span></span><br><span class="line"><span class="literal">NaN</span></span><br><span class="line"><span class="string">""</span></span><br></pre></td></tr></table></figure>
+<h4 id="null和undefined"><a href="#null和undefined" class="headerlink" title="null和undefined"></a>null和undefined</h4><p>null表示一个特殊值，对null进行typeof运算，返回结果是“object”，通常来表示对象是无值的。</p>
+<p>undefined来表示变量没有被初始化。如果要查询对象属性或者数组元素的值时返回undefined则说明这个属性或元素不存在。如果函数没有返回任何值，则返回undefined。如果对undefined类型进行typeof运算则永远返回undefined，表明这个类型只有唯一的值。</p>
+<h4 id="全局对象"><a href="#全局对象" class="headerlink" title="全局对象"></a>全局对象</h4><ul>
+<li>全局属性，undefined、Infinity和NaN</li>
+<li>全局函数，isNaN(),parseInt()和eval()</li>
+<li>构造函数，Date(),RegExp(),String(),Object(),Array()</li>
+<li>全局对象，Math和JSON</li>
+</ul>
+<h4 id="不可变的原始值和可变对象引用"><a href="#不可变的原始值和可变对象引用" class="headerlink" title="不可变的原始值和可变对象引用"></a>不可变的原始值和可变对象引用</h4><p>在js当中原始值是不可变的，如undefined和null和布尔值和数字以及字符串，对象是可变的。</p>
+<p>在比较相等的时候，原始值只比较值是否相等，对象是比较引用是否相同。</p>
+<h4 id="对象的转换"><a href="#对象的转换" class="headerlink" title="对象的转换"></a>对象的转换</h4><p>所有的对象都继承了两个转换方法：toString()和valueOf()。</p>
+<p>valueOf()表示返回对象的原始值，但是大多数对象都没有原始值所以一般都默认的返回对象本身。</p>
+<p>一般js对象到字符串的转换有如下步骤：</p>
+<ul>
+<li>如果对象有toString()方法，调用这个方法。如果返回一个原始值，js将这个原始值转换成字符串，并返回这个字符串结果。</li>
+<li>如果没toString()方法，或者toString()方法返回的不是一个原始值，那么js调用valueOf()方法。如果valueOf()方法存在则调用，如果返回的是原始值，会将这个原始值转换成字符串，并且返回这个字符串。</li>
+<li>如果toString()和valueOf()都不返回原始值，就会抛出异常。</li>
+</ul>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/js/">js</a></div><div class="post-nav"><a class="pre" href="/2014/11/16/c-leran1/">c语言类型运算符表达式</a><a class="next" href="/2014/11/07/linux-shell-learn3/">shell当中的循环</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

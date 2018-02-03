@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>awk 简单入门 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">awk 简单入门</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">awk 简单入门</h1><div class="post-meta">Jan 29, 2015<span> | </span><span class="category"><a href="/categories/linux/">linux</a></span></div><div class="post-content"><p>awk 入门的 hello world 如下：</p>
+<p>首先创建一个 a.txt 文件，里面的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ cat a.txt</span><br><span class="line">Proto Recv-Q Send-Q Local-Address          Foreign-Address             State</span><br><span class="line">tcp        0      0 0.0.0.0:3306           0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:80             0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 127.0.0.1:9000         0.0.0.0:*                   LISTEN</span><br><span class="line">$ awk &apos;&#123; print &quot;hello world&quot;&#125;&apos; a.txt</span><br><span class="line">hello world</span><br><span class="line">hello world</span><br><span class="line">hello world</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<p>awk 是输入驱动的，当调用 awk 程序的时候，它将读取所提供的脚本，然后 awk 将对每个输入行执行脚本中的命令。</p>
+<p>awk 程序是由所谓的主输入循环组成的。一个循环是一个例程，它将一直重复执行直到有一些存在的条件终止它。它可以从文件中读取一行并且使得进程可以访问它。</p>
+<p>awk 允许你编写两个特殊的例程，它们是在任何输入被读取前和所有输入都读取后执行。分别是与 BEGIN 和 END 相关的过程。并且它们两个是可选的。</p>
+<p>可以把 awk 看成三个部分组成：处理输入前将做的处理，处理输入过程中做的处理，处理输入完成后做的处理。</p>
+<p>看下面例子理解下三个部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;BEGIN &#123;print &quot;begin&quot;&#125; &#123;print $0&#125; END &#123;print &quot;END&quot;&#125;&apos; a.txt</span><br><span class="line">begin</span><br><span class="line">Proto Recv-Q Send-Q Local-Address          Foreign-Address             State</span><br><span class="line">tcp        0      0 0.0.0.0:3306           0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:80             0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 coolshell.cn:80        123.169.124.111:49809       ESTABLISHED</span><br><span class="line">tcp        0      0 coolshell.cn:80        117.136.20.85:50025         FIN_WAIT2</span><br><span class="line">tcp        0      0 :::22                  :::*                        LISTEN</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h3 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h3><p>在 awk 读入一行时，它试图匹配脚本中的每一个模式匹配规则。只有与一个特定的模式相匹配的输入行才能成为操作对象。</p>
+<p>如下示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;/LISTEN/ &#123;print $0&#125;&apos; a.txt</span><br><span class="line">tcp        0      0 0.0.0.0:3306           0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:80             0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 127.0.0.1:9000         0.0.0.0:*                   LISTEN</span><br><span class="line">tcp        0      0 :::22                  :::*                        LISTEN</span><br></pre></td></tr></table></figure>
+<h3 id="字段的引用和分离"><a href="#字段的引用和分离" class="headerlink" title="字段的引用和分离"></a>字段的引用和分离</h3><p>awk 允许使用字段操作符 $ 来指定字段。$1 表示第一个字段，以此类推。$0 表示整行输入记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;&#123;print $1,$2&#125;&apos; a.txt</span><br><span class="line">Proto Recv-Q</span><br><span class="line">tcp 0</span><br><span class="line">tcp 0</span><br><span class="line">tcp 0</span><br><span class="line">tcp 0</span><br></pre></td></tr></table></figure>
+<p>可以使用 -F 选项来改变字段分隔符。并且 print 本身会输出当前行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;a##b##c&quot; | awk -F &apos;##&apos; &apos;&#123;print $1,$2&#125;&apos;</span><br><span class="line">a b</span><br><span class="line">$ echo &quot;a##b##c&quot; | awk -F &apos;##&apos; &apos;&#123;print &#125;&apos;</span><br><span class="line">a##b##c&quot;</span><br></pre></td></tr></table></figure>
+<p>在脚本中也可以指定域分隔符，可以通过系统变量 FS 来改变。因为整个必须在读取第一个输入行之前执行，所以必须在由 BEGIN 当中指定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;a##b##c&quot; | awk &apos;BEGIN &#123; FS=&quot;##&quot;&#125; &#123;print $1,$3&#125;&apos;</span><br><span class="line">a c</span><br></pre></td></tr></table></figure>
+<p>我们也可以测试匹配指定的字段，使用 ~ 操作符可以测试一个字段的正则表达式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;$6 ~ /WAIT/ &#123;print&#125;&apos; a.txt</span><br><span class="line">tcp        0      0 coolshell.cn:80        124.205.5.146:18245         TIME_WAIT</span><br><span class="line">tcp        0      0 coolshell.cn:80        61.140.101.185:37538        FIN_WAIT2</span><br><span class="line">tcp        0      0 coolshell.cn:80        116.234.127.77:11502        FIN_WAIT2</span><br><span class="line">tcp        0      0 coolshell.cn:80        183.60.215.36:36970         TIME_WAIT</span><br><span class="line">tcp        0      1 coolshell.cn:80        124.152.181.209:26825       FIN_WAIT1</span><br><span class="line">tcp        0      0 coolshell.cn:80        183.60.212.163:51082        TIME_WAIT</span><br><span class="line">tcp        0      0 coolshell.cn:80        117.136.20.85:50025         FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<h3 id="字段的划分"><a href="#字段的划分" class="headerlink" title="字段的划分"></a>字段的划分</h3><p>FS 设置成一个空格，这种情况记录的前导空白字符和结尾空白字符会被忽略，并且字段用空格或制表来分隔，FS 默认的就是一个空格。</p>
+<p>FS 设置成一个单个字符，在这个字符出现的任何地方都将分隔出另外一个字段，如果两个连续的分隔符，在它们之间的字段值为空串。</p>
+<p>FS 设置成多个字符，它将被作为一个正则表达式来解释。也就是，字段分隔符是与正则表达式匹配的“最左边最长的非空部重叠”的字串。</p>
+<h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><p>一个表达式通过计算返回一个值。表达式由数字和字符串常量、变量、操作符、函数和正则表达式组成。</p>
+<p>常量有两种类型：</p>
+<ul>
+<li>字符串型：”rcx”，字符串在表达式中必须用括号括起来。</li>
+<li>数字型：1</li>
+</ul>
+<p>变量名只能由字母、数字和下划线组成。而且不能以数字开头。</p>
+<p>如下表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=1</span><br><span class="line">z=&quot;hello&quot;</span><br><span class="line">p=&quot;hello&quot; &quot;world&quot; 空格是字符串连接符，将 helloworld 赋值给 p</span><br></pre></td></tr></table></figure>
+<p>如下例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat a.txt</span><br><span class="line">rcx 90</span><br><span class="line">qwe 23</span><br><span class="line">sdf 34</span><br><span class="line">$ awk &apos;&#123;sum+=$2&#125; END &#123;print sum&#125;&apos; a.txt</span><br><span class="line">147</span><br></pre></td></tr></table></figure>
+<p>这里面虽然 sum 没赋初始值，但在开始它的值是 0。</p>
+<h3 id="系统变量"><a href="#系统变量" class="headerlink" title="系统变量"></a>系统变量</h3><p>awk 当中有许多系统变量或内置变量。</p>
+<p>awk 有两种类型的系统变量：</p>
+<ul>
+<li>变量的默认值可以改变，默认的字段和记录分隔符</li>
+<li>变量的值可用于报告或数据处理中，例如当前行字段的数量等</li>
+</ul>
+<p>看下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">变量</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$0</td>
+<td style="text-align:left">当前记录（这个变量中存放着整个行的内容）</td>
+</tr>
+<tr>
+<td style="text-align:left">$1~$n</td>
+<td style="text-align:left">当前记录的第n个字段，字段间由FS分隔</td>
+</tr>
+<tr>
+<td style="text-align:left">FS</td>
+<td style="text-align:left">输入字段分隔符 默认是空格或Tab</td>
+</tr>
+<tr>
+<td style="text-align:left">NF</td>
+<td style="text-align:left">当前记录中的字段个数，就是有多少列</td>
+</tr>
+<tr>
+<td style="text-align:left">NR</td>
+<td style="text-align:left">已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</td>
+</tr>
+<tr>
+<td style="text-align:left">FNR</td>
+<td style="text-align:left">当前记录数，与NR不同的是，这个值会是各个文件自己的行号</td>
+</tr>
+<tr>
+<td style="text-align:left">RS</td>
+<td style="text-align:left">输入的记录分隔符， 默认为换行符</td>
+</tr>
+<tr>
+<td style="text-align:left">OFS</td>
+<td style="text-align:left">输出字段分隔符， 默认也是空格</td>
+</tr>
+<tr>
+<td style="text-align:left">ORS</td>
+<td style="text-align:left">输出的记录分隔符，默认为换行符</td>
+</tr>
+<tr>
+<td style="text-align:left">FILENAME</td>
+<td style="text-align:left">当前输入文件的名字</td>
+</tr>
+</tbody>
+</table>
+<p>【参考资料】</p>
+<ol>
+<li><a href="http://book.douban.com/subject/1236944/" target="_blank" rel="noopener">sed与awk</a></li>
+</ol>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/linux-awk/">linux awk</a></div><div class="post-nav"><a class="pre" href="/2015/01/29/sed-learn1/">sed 简单入门</a><a class="next" href="/2015/01/28/oop-solid/">面向对象设计原则</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

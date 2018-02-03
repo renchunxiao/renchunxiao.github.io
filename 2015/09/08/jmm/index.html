@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>java 内存模型学习 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">java 内存模型学习</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">java 内存模型学习</h1><div class="post-meta">Sep 8, 2015<span> | </span><span class="category"><a href="/categories/java基础/">java基础</a></span></div><div class="post-content"><h2 id="并发模型分类"><a href="#并发模型分类" class="headerlink" title="并发模型分类"></a>并发模型分类</h2><p>并发编程我们需要处理两个问题：</p>
+<ul>
+<li>线程之间如何通信<ul>
+<li>共享内存</li>
+<li>消息传递</li>
+</ul>
+</li>
+<li>线程之间如何同步</li>
+</ul>
+<p>Java 的并发采用的是共享内存模型。</p>
+<h2 id="Java-内存模型抽象"><a href="#Java-内存模型抽象" class="headerlink" title="Java 内存模型抽象"></a>Java 内存模型抽象</h2><p>java 中,所有实例域、静态域和数组元素存储在堆内存中,堆内存在线程之间共享。</p>
+<p>局部变量,方法定义参数和异常处理器参数不会在线程之间共享,它们不会有内存可见性问题,也不受内存模型的影响。</p>
+<p>Java 线程之间的通信由 Java 内存模型(JMM)控制，JMM 决定一个线程对共享变量的写入何时对另一个线程可见。JMM 抽象出来了每个线程都有一个私有的本地内存，本地内存中存储了该线程以读/写共享变量的副本。</p>
+<p><img src="https://renchunxiao.com/public/images/jmm1.png" alt="JMM模型"></p>
+<h2 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h2><p>重排序有三种类型：</p>
+<ul>
+<li>编译器优化重排序</li>
+<li>指令重排序</li>
+<li>内存系统重排序</li>
+</ul>
+<p>从 java 源代码到最终实际执行的指令序列,会分别经历下面三种重排序:</p>
+<p>源代码 -》 编译器重排序 -》 指令重排序 -》 内存重排序 -》 最终指令序列</p>
+<p>重排序可能导致多线程出现内存可见性问题。</p>
+<h3 id="数据依赖性"><a href="#数据依赖性" class="headerlink" title="数据依赖性"></a>数据依赖性</h3><p>如果两个操作访问同一个变量，并且这两个操作中有一个为写操作，此时这两个操作之间就存在数据依赖性。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">代码示例</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">写后读</td>
+<td style="text-align:left">a=1; b=a;</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">写后写</td>
+<td style="text-align:left">a=1; a=2;</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">读后写</td>
+<td style="text-align:left">a=b; b=1;</td>
+<td style="text-align:left">-</td>
+</tr>
+</tbody>
+</table>
+<p>上面三种情况,只要重排序两个操作的执行顺序,程序的执行结果将会被改变。</p>
+<h3 id="as-if-serial"><a href="#as-if-serial" class="headerlink" title="as-if-serial"></a>as-if-serial</h3><p>as-if-serial 语义的意思指:不管怎么重排序(编译器和处理器为了提高并行度), (单线程)程序的执行结果不能被改变。</p>
+<p>为了遵守 as-if-serial 语义,编译器和处理器不会对存在数据依赖关系的操作做重排序,因为这种重排序会改变执行结果。</p>
+<p>如果操作之间不存在数据依赖关系，这些操作就可以被编译器和处理器重排序。</p>
+<p>例如:下面代码 A 和 C 存在数据依赖， B 和 C 存在数据依赖，所以 C 不能重排序到 A 和 B 前面，但是 A 和 B 没数据依赖关系，可以重排序 A 和 B 之间的执行顺序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> pi = <span class="number">3.14</span>; <span class="comment">//A</span></span><br><span class="line"><span class="keyword">double</span> r = <span class="number">1.0</span>; <span class="comment">//B</span></span><br><span class="line"><span class="keyword">double</span> area = pi * r * r; <span class="comment">//C</span></span><br></pre></td></tr></table></figure>
+<h3 id="重排序对多线程的影响"><a href="#重排序对多线程的影响" class="headerlink" title="重排序对多线程的影响"></a>重排序对多线程的影响</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReorderExample</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">￼	<span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		a = <span class="number">1</span>; <span class="comment">//1</span></span><br><span class="line">        flag = <span class="keyword">true</span>; <span class="comment">//2</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">if</span> (flag) &#123; <span class="comment">//3</span></span><br><span class="line">			<span class="keyword">int</span> i = a * a; <span class="comment">//4</span></span><br><span class="line">    	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里假设有两个线程 A 和 B, A 首先执行 writer()方法,随后 B 线程接着执行 reader()方法。</p>
+<p>由于操作 1 和操作 2 没有数据依赖关系,编译器和处理器可以对这两个操作重排序;同样,操作 3 和操作 4 没有数据依赖关系,编译器和处理器也可以对这两个操作重排序。</p>
+<p>操作 1 和操作 2 做了重排序。程序执行时,线程 A 首先写标记变量 flag,随后线程 B 读这个变量。由于条件判断为真,线程 B 将读取变量 a。此时, 变量 a 还根本没有被线程 A 写入,在这里多线程程序的语义被重排序破坏了!</p>
+<p>当操作 3 和操作 4 重排序时。在程序中,操作 3 和操作 4 存在控制依赖关系。当代码中存在控制依赖性时,会影响指令序列执行的并行度。为此,编译器和处理器会采用猜测(Speculation)执 行来克服控制相关性对并行度的影响。以处理器的猜测执行为例,执行线程 B 的处 理器可以提前读取并计算 a*a,然后把计算结果临时保存到一个名为重排序缓冲 (reorder buffer ROB)的硬件缓存中。当接下来操作 3 的条件判断为真时,就把该计算结果写入变量 i 中。</p>
+<p>在单线程程序中,对存在控制依赖的操作重排序,不会改变执行结果(这也是 as- if-serial 语义允许对存在控制依赖的操作做重排序的原因);但在多线程程序中, 对存在控制依赖的操作重排序,可能会改变程序的执行结果。</p>
+<h2 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h2><p>在 JMM 中,如果一个操作执行的结果需要对另一个操作可见,那么这两个操作之间必须要存在 happens-before 关系。这里提到的两个操作既可以是在一个线程之内,也可以是在不同线程之间。</p>
+<p>happens-before 规则如下：</p>
+<ul>
+<li>程序顺序规则：一个线程中的每个操作，happens- before 于该线程中的任意后续操作。</li>
+<li>监视器锁规则：对一个监视器的解锁，happens-before 于随后对这个监视器的加锁。</li>
+<li>volatile 变量规则：对于一个 volatile 变量的写，happens-before 于任意后续对这个 volatile 变量的读。</li>
+<li>传递性：如果 A happens- before B,且 B happens- before C,那么 A happens- before C。</li>
+</ul>
+<h3 id="程序顺序规则"><a href="#程序顺序规则" class="headerlink" title="程序顺序规则"></a>程序顺序规则</h3><p>根据 happens-before 的程序顺序规则，上面计算圆面积的例子存在3个 happens-before 关系：</p>
+<ol>
+<li>A happens-before B</li>
+<li>B happens-before C</li>
+<li>A happens-before C（传递性推导出来）</li>
+</ol>
+<p>这里 A happens-before B，但是实际执行时候 B 可以排在 A 前面执行，因为 JMM 仅仅要求前一个操作对后一个操作可见，上面例子的 A 操作结果不需要对 B 操作可见；而且重排序操作 A 和操作 B 后的结果与顺序执行结果一致。在这种情况下， JMM 会认为这种重排序可以。</p>
+<p>【参考资料】</p>
+<ol>
+<li>深入理解java内存模型</li>
+</ol>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/java/">java</a></div><div class="post-nav"><a class="pre" href="/2015/09/09/jaxb/">JAXB 学习</a><a class="next" href="/2015/09/06/LinkedBlockingQueue/">浅析 LinkedBlockingQueue</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>scala 基础学习 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">scala 基础学习</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">scala 基础学习</h1><div class="post-meta">Apr 10, 2015<span> | </span><span class="category"><a href="/categories/scala/">scala</a></span></div><div class="post-content"><h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>Scala 有两种变量：</p>
+<ul>
+<li>val，类似于 Java 里的 final 变量，一旦初始化了，val 就不能再赋值了。</li>
+<li>var，如同 Java 里面的非 final 变量，可以在它生命周期中被多次赋值。</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> msg = <span class="string">"Hello, world!"</span></span><br><span class="line">msg: java.lang.<span class="type">String</span> = <span class="type">Hello</span>, world!</span><br></pre></td></tr></table></figure>
+<p>本例演示了类型推断，Scala 解释器（或编译器）可以推断类型。</p>
+<p>也可以指定类型：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> msg2: java.lang.<span class="type">String</span> = <span class="string">"Hello again, world!"</span></span><br><span class="line">msg2: java.lang.<span class="type">String</span> = <span class="type">Hello</span> again, world!</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 Scala 程序里 java.lang 类型的简化名也是可见的</span></span><br><span class="line">scala&gt; <span class="keyword">val</span> msg3: <span class="type">String</span> = <span class="string">"Hello yet again, world!"</span></span><br><span class="line">msg3: <span class="type">String</span> = <span class="type">Hello</span> yet again, world!</span><br></pre></td></tr></table></figure>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>定义一个简单的函数如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max</span></span>(x: <span class="type">Int</span>, y: <span class="type">Int</span>): <span class="type">Int</span> = &#123;</span><br><span class="line">	<span class="keyword">if</span> (x &gt; y)</span><br><span class="line">    	x</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    	y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数的定义用 def 开始。上面例子的函数名字是 max，括号里面是参数列表，每个函数参数后面必须带前缀冒号的类型标注，因为 Scala 编译器没办法推断函数参数类型。外面的: Int 是函数的结果类型。</p>
+<p>函数的结果类型可以省略，但是当函数是递归的情况，就必须显示的定义函数结果类型。同样，如果函数由一个句子组成，可以不写大括号。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max2</span></span>(x: <span class="type">Int</span>, y: <span class="type">Int</span>) = <span class="keyword">if</span> (x &gt; y) x <span class="keyword">else</span> y</span><br></pre></td></tr></table></figure>
+<h4 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h4><p>while 循环如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> (i &lt; args.length) &#123;</span><br><span class="line">	println(args(i))</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 Java 的 <code>++i</code> 和 <code>i++</code>在 Scala 里不起作用，要在 Scala 里自增，必须写成要么 i = i + 1，或者 i += 1。用</p>
+<p>函数式的循环：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">args.foreach(arg =&gt; println(arg))</span><br><span class="line"></span><br><span class="line">args.foreach((arg: <span class="type">String</span>) =&gt; println(arg))</span><br><span class="line"></span><br><span class="line">args.foreach(println)</span><br></pre></td></tr></table></figure>
+<p>总而言之，函数文本的语法就是，括号里的命名参数列表，右箭头，然后是函数体。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  函数参数        右箭头    函数体</span><br><span class="line">(x: <span class="type">Int</span>, y: <span class="type">Int</span>)   =&gt;      x + y</span><br></pre></td></tr></table></figure>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>创建一个数组如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> greetStrings = <span class="keyword">new</span> <span class="type">Array</span>[<span class="type">String</span>](<span class="number">3</span>)</span><br><span class="line">greetStrings(<span class="number">0</span>) = <span class="string">"Hello"</span></span><br><span class="line">greetStrings(<span class="number">1</span>) = <span class="string">", "</span></span><br><span class="line">greetStrings(<span class="number">2</span>) = <span class="string">"world!\n"</span></span><br><span class="line"><span class="keyword">for</span> (i &lt;- <span class="number">0</span> to <span class="number">2</span>)</span><br><span class="line">	print(greetStrings(i))</span><br></pre></td></tr></table></figure>
+<p>greetStrings 的类型是 <code>Array[String]</code>，不是<code>Array[String](3)</code>。</p>
+<p>Scala 里的数组是通过把索引放在圆括号里面访问的。</p>
+<p>上面的 for 循环当中 0 to 2，这段代码的 to 实际上是带一个 Int 参数的方法。代码 0 to 2 被转换成方法调用 (0).to(2) 。</p>
+<p>Scala 没有操作符重载，因为它根本没有传统意义上的操作符。取而代之的是，诸如<code>+，-，*</code>和<code>/</code>这样的字符可以用来做方法名。</p>
+<p>你也可以使用传统的方法调用语法把 1 + 2 替代写成 (1).+(2) 。</p>
+<p>Scala 里所有的操作符都是方法调用。</p>
+<p>另一重要思想可以让你看到为什么数组在 Scala 里是用括号访问的。</p>
+<p>当你在一个或多个值或变量外使用括号时，Scala 会把它转换成对名为 apply的 方法调用。</p>
+<p>当然前提是这个类型实际定义过 apply 方法。所以这不是一个特例，而是一个通则。</p>
+<p>带有括号里参数和等号右边的对象的 update 方法的调用。</p>
+<p>于是 greetStrings(i) 转换成 greetStrings.apply(i)。所以 Scala 里访问数组的元素也只不过是跟其它的一样的方法调用。这个原则不仅仅局限于数组：任何对某些在括号中的参数的对象的应用将都被转换为对 apply 方法的调用。</p>
+<p>看下面的转化：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">greetStrings(<span class="number">0</span>) = <span class="string">"Hello"</span></span><br><span class="line">将被转化为</span><br><span class="line">greetStrings.update(<span class="number">0</span>, <span class="string">"Hello"</span>)</span><br></pre></td></tr></table></figure>
+<p>更简洁的定义数组的方式：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numNames = <span class="type">Array</span>(<span class="string">"zero"</span>, <span class="string">"one"</span>, <span class="string">"two"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><p>创建一个 List 很简单:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> oneTwoThree = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>List 有个叫“:::”的方法实现叠加功能。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> oneTwo = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="keyword">val</span> threeFour = <span class="type">List</span>(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="keyword">val</span> oneTwoThreeFour = oneTwo ::: threeFour</span><br><span class="line">println(oneTwo + <span class="string">" and "</span> + threeFour + <span class="string">" were not mutated."</span>)</span><br><span class="line">println(<span class="string">"Thus, "</span> + oneTwoThreeFour + <span class="string">" is a new List."</span>)</span><br></pre></td></tr></table></figure>
+<p>输出结果是：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>) and <span class="type">List</span>(<span class="number">3</span>, <span class="number">4</span>) were not mutated.</span><br><span class="line"><span class="type">Thus</span>, <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>) is a <span class="keyword">new</span> <span class="type">List</span>.</span><br></pre></td></tr></table></figure>
+<p>‘::’ 把一个新元素组合到已有 List 的最前端，然后返回结果 List。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> twoThree = list(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">val</span> oneTwoThree = <span class="number">1</span> :: twoThree</span><br><span class="line">println(oneTwoThree)</span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line"><span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>下表是 List 的一些方法和作用</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方法名</th>
+<th style="text-align:left">方法作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">List() 或 Nil</td>
+<td style="text-align:left">空List</td>
+</tr>
+<tr>
+<td style="text-align:left">List(“Cool”, “tools”, “rule)</td>
+<td style="text-align:left">创建带有三个值”Cool”，”tools”和”rule”的新List[String]</td>
+</tr>
+<tr>
+<td style="text-align:left">val thrill = “Will”::”fill”::”until”::Nil</td>
+<td style="text-align:left">创建带有三个值”Will”，”fill”和”until”的新List[String]</td>
+</tr>
+<tr>
+<td style="text-align:left">List(“a”, “b”) ::: List(“c”, “d”)</td>
+<td style="text-align:left">叠加两个列表（返回带”a”，”b”，”c”和”d”的新List[String]）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill(2)</td>
+<td style="text-align:left">返回在thrill列表上索引为2（基于0）的元素（返回”until”）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.count(s =&gt; s.length == 4)</td>
+<td style="text-align:left">计算长度为 4 的 String 元素个数（返回2）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.drop(2)</td>
+<td style="text-align:left">返回去掉前2个元素的thrill列表（返回List(“until”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.dropRight(2)</td>
+<td style="text-align:left">返回去掉后2个元素的thrill列表（返回List(“Will”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.exists(s =&gt; s == “until”)</td>
+<td style="text-align:left">判断是否有值为”until”的字串元素在thrill里（返回true）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.filter(s =&gt; s.length == 4)</td>
+<td style="text-align:left">依次返回所有长度为4的元素组成的列表（返回List(“Will”, “fill”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.forall(s =&gt; s.endsWith(“1”))</td>
+<td style="text-align:left">辨别是否thrill列表里所有元素都以”l”结尾（返回true）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.foreach(s =&gt; print(s))</td>
+<td style="text-align:left">对thrill列表每个字串执行print语句（”Willfilluntil”）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.foreach(print)</td>
+<td style="text-align:left">与前相同，不过更简洁（同上）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.head</td>
+<td style="text-align:left">返回thrill列表的第一个元素（返回”Will”）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.init</td>
+<td style="text-align:left">返回thrill列表除最后一个以外其他元素组成的列表（返回List(“Will”, “fill”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.isEmpty</td>
+<td style="text-align:left">说明thrill列表是否为空（返回false）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.last</td>
+<td style="text-align:left">返回thrill列表的最后一个元素（返回”until”）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.length</td>
+<td style="text-align:left">返回thrill列表的元素数量（返回3）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.map(s =&gt; s + “y”)</td>
+<td style="text-align:left">返回由thrill列表里每一个String元素都加了”y”构成的列表（返回List(“Willy”, “filly”, “untily”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.mkString(“, “)</td>
+<td style="text-align:left">用列表的元素创建字串（返回”will, fill, until”）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.remove(s =&gt; s.length == 4)</td>
+<td style="text-align:left">返回去除了thrill列表中长度为4的元素后依次排列的元素列表（返回List(“until”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.reverse</td>
+<td style="text-align:left">返回含有thrill列表的逆序元素的列表（返回List(“until”, “fill”, “Will”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.sort((s, t) =&gt; s.charAt(0).toLowerCase &lt; t.charAt(0).toLowerCase)</td>
+<td style="text-align:left">返回包括thrill列表所有元素，并且第一个字符小写按照字母顺序排列的列表（返回List(“fill”, “until”, “Will”)）</td>
+</tr>
+<tr>
+<td style="text-align:left">thrill.tail</td>
+<td style="text-align:left">返回除掉第一个元素的thrill列表（返回List(“fill”, “until”)）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h4><p>另一种有用的容器对象是元组：tuple。与列表一样，元组也是不可变的，但与列表不同，元组可以包含不同类型的元素。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> pair = (<span class="number">99</span>, <span class="string">"Luftballons"</span>)</span><br><span class="line">println(pair._1)</span><br><span class="line">println(pair._2)</span><br></pre></td></tr></table></figure>
+<p>Scala 推断元组类型为 Tuple2[Int, String]，并把它赋给变量 pair。</p>
+<h4 id="Set-和-Map"><a href="#Set-和-Map" class="headerlink" title="Set 和 Map"></a>Set 和 Map</h4><p>Set 提供了两种实现，一种是可变类型的，一种是不可变的。默认提供的是不可变类型的。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jetSet = <span class="type">Set</span>(<span class="string">"Boeing"</span>, <span class="string">"Airbus"</span>)</span><br><span class="line">jetSet += <span class="string">"Lear"</span></span><br><span class="line">println(jetSet.contains(<span class="string">"Cessna"</span>))</span><br></pre></td></tr></table></figure>
+<p>如果你需要可变集，就需要使用一个引用：import</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">Set</span></span><br><span class="line"><span class="keyword">val</span> movieSet = <span class="type">Set</span>(<span class="string">"Hitch"</span>, <span class="string">"Poltergeist"</span>)</span><br><span class="line">movieSet += <span class="string">"Shrek"</span></span><br><span class="line">println(movieSet)</span><br></pre></td></tr></table></figure>
+<p>Map 类型也有两种 scala.collection 包里面有一个基础 Map 特质和两个子特质 Map：可变的 Map 在 scala.collection.mutable 里，不可变的在 scala.collection.immutable 里。同时不可变也是缺省的。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">Map</span></span><br><span class="line"><span class="keyword">val</span> treasureMap = <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">String</span>]()</span><br><span class="line">treasureMap += (<span class="number">1</span> -&gt; <span class="string">"Go to island."</span>)</span><br><span class="line">treasureMap += (<span class="number">2</span> -&gt; <span class="string">"Find big X on ground."</span>)</span><br><span class="line">treasureMap += (<span class="number">3</span> -&gt; <span class="string">"Dig."</span>)</span><br><span class="line"></span><br><span class="line">println(treasureMap(<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>更简单的创建如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> romanNumeral = <span class="type">Map</span>(</span><br><span class="line">	<span class="number">1</span> -&gt; <span class="string">"I"</span>, <span class="number">2</span> -&gt; <span class="string">"II"</span>, <span class="number">3</span> -&gt; <span class="string">"III"</span>, <span class="number">4</span> -&gt; <span class="string">"IV"</span>, <span class="number">5</span> -&gt; <span class="string">"V"</span></span><br><span class="line">)</span><br><span class="line">println(romanNumeral(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<p>【参考资料】</p>
+<ol>
+<li><a href="http://book.douban.com/subject/5377415/" target="_blank" rel="noopener">Scala编程</a></li>
+</ol>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/笔记-scala/">笔记 scala</a></div><div class="post-nav"><a class="pre" href="/2015/04/13/go-learn2/">go 语言函数学习</a><a class="next" href="/2015/04/10/c-learn5/">c 指针与数组上</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

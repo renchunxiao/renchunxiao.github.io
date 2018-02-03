@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>awk 内置表达式 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">awk 内置表达式</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">awk 内置表达式</h1><div class="post-meta">Feb 5, 2015<span> | </span><span class="category"><a href="/categories/linux/">linux</a></span></div><div class="post-content"><h3 id="关系操作符和布尔表达式"><a href="#关系操作符和布尔表达式" class="headerlink" title="关系操作符和布尔表达式"></a>关系操作符和布尔表达式</h3><p>关系操作符如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&lt;</td>
+<td style="text-align:left">小于</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;</td>
+<td style="text-align:left">大于</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;=</td>
+<td style="text-align:left">小于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;=</td>
+<td style="text-align:left">大于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">==</td>
+<td style="text-align:left">相等</td>
+</tr>
+<tr>
+<td style="text-align:left">!=</td>
+<td style="text-align:left">不相等</td>
+</tr>
+<tr>
+<td style="text-align:left">~</td>
+<td style="text-align:left">匹配</td>
+</tr>
+<tr>
+<td style="text-align:left">!~</td>
+<td style="text-align:left">不匹配</td>
+</tr>
+</tbody>
+</table>
+<p>关系表达式可以用在模式中来控制特殊的操作。</p>
+<p>布尔操作符如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">两个竖线</td>
+<td style="text-align:left">逻辑或</td>
+</tr>
+<tr>
+<td style="text-align:left">&amp;&amp;</td>
+<td style="text-align:left">逻辑与</td>
+</tr>
+<tr>
+<td style="text-align:left">!</td>
+<td style="text-align:left">逻辑非</td>
+</tr>
+</tbody>
+</table>
+<h3 id="向脚本传递参数"><a href="#向脚本传递参数" class="headerlink" title="向脚本传递参数"></a>向脚本传递参数</h3><p>在 awk 当中，可以给脚本传递参数，参数将值赋给一个变量，这个变量可以在 awk 脚本当中访问。这个变量可以放在命令行上设置，放在脚本的后面，文件名的前面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;BEGIN &#123;print d&#125; &#123;print d&#125;&apos; d=`pwd` a.txt</span><br></pre></td></tr></table></figure>
+<p>命令行参数一个重要限制是它们在 BEGIN 过程中是不可以使用的。</p>
+<h3 id="awk-当中的条件、循环和数组"><a href="#awk-当中的条件、循环和数组" class="headerlink" title="awk 当中的条件、循环和数组"></a>awk 当中的条件、循环和数组</h3><p><strong>条件语句</strong></p>
+<p>语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if ( expression ) &#123;</span><br><span class="line">     action</span><br><span class="line"> &#125;</span><br><span class="line">else if (expression2) &#123;</span><br><span class="line">     action1</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">     action2</span><br><span class="line">&#125;</span><br><span class="line">if (x == y) print x</span><br></pre></td></tr></table></figure>
+<p><strong>条件操作符</strong></p>
+<p>awk 中提供的条件操作符可以在 C 语言中找到，形式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expr ? action1 : action2</span><br></pre></td></tr></table></figure>
+<p><strong>循环</strong></p>
+<p>while 循环语法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while (condition) &#123;</span><br><span class="line">     action</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>do while 循环语法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">do &#123;</span><br><span class="line">     action</span><br><span class="line">&#125; while (condition)</span><br></pre></td></tr></table></figure>
+<p>for 循环语法如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for (set_counter; test_counter; increment_counter) &#123;</span><br><span class="line">     action</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for (i = 1; i &lt;= 5; i++) &#123;</span><br><span class="line">     print i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>影响流控制的其他语句</strong></p>
+<p>在循环中还有两个语句可以影响控制流，break 和 continue。</p>
+<p>有两个语句能影响输入循环，next 和 exit。</p>
+<p>next 语句能够让读入下一个输入行，并且返回到脚本的底部。这可以避免对当前输入行执行其他的操作过程。</p>
+<p>exit 语句使主输入循环退出并且将控制移到 END 规则，如果 END 存在的话。如果没有 END，或者在 END 中应用 exit 语句，则终止脚本的执行。</p>
+<p><strong>数组</strong></p>
+<p>可以用数组存储一组变量，在 awk 当中不必指明数组的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array[name] = &quot;rcx&quot;</span><br><span class="line">array[1] = &quot;chx&quot;</span><br></pre></td></tr></table></figure>
+<p>在 awk 当中，所有数组都是关联数组。数组的下标可以是字符或数字。</p>
+<p>可以使用特殊的循环来访问关联数组的元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(var in array) &#123;</span><br><span class="line">	do action with array[var]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键词 in 是一个操作符，可以用来测试一个下标是否是数组的成员。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item in array</span><br></pre></td></tr></table></figure>
+<p>如果存在则返回 1，否则返回 0。</p>
+<p><strong>内置函数</strong></p>
+<p>内置函数 split 能够将任何字符串费解到数组的元素当中去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n = split(string, array, separator)</span><br></pre></td></tr></table></figure>
+<p>n 代表元素的个数，分解的元素存放在 array 当中。</p>
+<p>删除数组元素如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete array[item]</span><br></pre></td></tr></table></figure>
+<p><strong>系统变量数组</strong></p>
+<p>awk 中提供的两个系统变量 ARGV 和 ENVIRON 是数组。</p>
+<p>ARGV 是一个命令行参数的数组，不包括脚本本身和任何调用 awk 指定的选项，这个数组元素的个数可以从 ARGC 获得。数组第一个元素的下标是 0。</p>
+<p>ENVIRON 是一个环境变量数组，数组中每一个元素是当前环境变量的值，下标是环境变量的名字。</p>
+<p>【参考资料】</p>
+<ol>
+<li><a href="http://book.douban.com/subject/1236944/" target="_blank" rel="noopener">sed与awk</a></li>
+</ol>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/linux-awk/">linux awk</a></div><div class="post-nav"><a class="pre" href="/2015/02/09/sed-learn2/">sed 简单入门2</a><a class="next" href="/2015/01/29/sed-learn1/">sed 简单入门</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

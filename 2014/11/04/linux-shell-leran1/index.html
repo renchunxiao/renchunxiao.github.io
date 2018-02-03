@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>构建基本shell脚本 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">构建基本shell脚本</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">构建基本shell脚本</h1><div class="post-meta">Nov 4, 2014<span> | </span><span class="category"><a href="/categories/linux/">linux</a></span></div><div class="post-content"><h4 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h4><p>shell维护着一组环境变量，用来记录系统特定的信息。如，系统名称，用户UID等。使用set命令查看完整的环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">set</span></span><br><span class="line">BASH=/bin/bash</span><br><span class="line">LINES=39</span><br><span class="line">TMOUT=1800</span><br><span class="line">UID=40012</span><br><span class="line">USER=chunxiao.ren</span><br><span class="line">HOME=/home/chunxiao.ren</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以在shell脚本中使用系统的环境变量。使用方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HOME</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"this <span class="variable">$PATH</span> is a <span class="variable">$15</span>"</span></span><br></pre></td></tr></table></figure>
+<p>看上面最后一行，实际的想法是想输入$15这个字符，但是脚本会尝试显示变量$1(但是为定义)。想要显示美元符，需要在它前面放置一个反斜线。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"this <span class="variable">$PATH</span> is a \$15"</span></span><br></pre></td></tr></table></figure>
+<h4 id="用户变量"><a href="#用户变量" class="headerlink" title="用户变量"></a>用户变量</h4><p>shell脚本中可以使用自定义变量。用户变量可以是任何不超过20个字母、数字或者下划线的字符串。用户变量区分大小写。</p>
+<p>如下例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line">str=<span class="string">"this is a string"</span></span><br></pre></td></tr></table></figure>
+<p>shell脚本自动决定变量的数据类型。在脚本的整个生命周期里，shell脚本中定义的变量会一直保存他们的值，但是在shell脚本执行完成时候删除掉。</p>
+<p>用户变量也可以通过美元符引用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line">a=1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"this a is <span class="variable">$a</span>"</span></span><br></pre></td></tr></table></figure>
+<p>变量每次被引用的时候都会输出当前赋给它的值。引用变量值时需要使用美元符，对变量进行赋值时则不要使用美元符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line">value=10</span><br><span class="line">value1=<span class="variable">$value</span></span><br></pre></td></tr></table></figure>
+<p>如果对value1的赋值不加美元符则，value1的值就是value字符串了。</p>
+<h4 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h4><p>反引号`,允许将shell命令的输出赋值给变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="built_in">test</span>=`date`</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$test</span></span><br></pre></td></tr></table></figure>
+<h4 id="输出重定向"><a href="#输出重定向" class="headerlink" title="输出重定向"></a>输出重定向</h4><p>bash shell采用大于号(&gt;)来完成这个功能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date &gt; a</span><br></pre></td></tr></table></figure>
+<p>重定向操作符创建了一个文件a，并且将date命令输出重定向到a文件中。如果文件存在了，则会覆盖这个文件的数据。</p>
+<p>可以使用(&gt;&gt;)来在文件中追加数据。</p>
+<h4 id="输入重定向"><a href="#输入重定向" class="headerlink" title="输入重定向"></a>输入重定向</h4><p>输入重定向跟输出重定向正好相反。输入重定向是将文件的内容重定向到命令。</p>
+<p>输入重定向使用(&lt;)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep hello &lt; a</span><br></pre></td></tr></table></figure>
+<p>另外还有内联输入重定向，用(&lt;&lt;)来表示。</p>
+<p>使用内联输入重定向的时候必须指定一个文本标记来划分要输入数据的开始和结尾。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep hello &lt;&lt;EOF</span><br><span class="line">heredoc&gt; thisis</span><br><span class="line">heredoc&gt; hello</span><br><span class="line">heredoc&gt; EOF</span><br></pre></td></tr></table></figure>
+<h4 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h4><p>有时候需要将某个命令的输入作为另外一个命令的输入。这个时候可以使用管道符（|）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep java</span><br></pre></td></tr></table></figure>
+<h4 id="expr命令"><a href="#expr命令" class="headerlink" title="expr命令"></a>expr命令</h4><p>expr命令允许在命令行上处理数学表达式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expr 1 + 5</span><br><span class="line">expr 1 \* 5</span><br></pre></td></tr></table></figure>
+<p>运算符之间是带空格的，并且很麻烦，一般不使用。</p>
+<h4 id="使用方括号"><a href="#使用方括号" class="headerlink" title="使用方括号"></a>使用方括号</h4><p>为了替代expr，更加简单的执行数学表达式。使用方式是$[operation]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=$[1+2]</span><br><span class="line">b=$[<span class="variable">$a</span>*2]</span><br></pre></td></tr></table></figure>
+<p>expr命令和方括号只支持整数运算。</p>
+<h4 id="浮点运算"><a href="#浮点运算" class="headerlink" title="浮点运算"></a>浮点运算</h4><p>最常见的解决浮点运算的是bc。先输入bc命令，然后在提示符下输入浮点运算式。</p>
+<h4 id="查看退出状态码"><a href="#查看退出状态码" class="headerlink" title="查看退出状态码"></a>查看退出状态码</h4><p>Linux提供了$?专属变量来保存上一个执行的命令的退出状态码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ date</span><br><span class="line">Tue Nov  4 22:42:55 CST 2014</span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>按照惯例，一个成功结束的命令的退出状态是0.如果一个命令结束时有错误，退出状态中就会有一个正数值。</p>
+<p>Linux退出状态码表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">状态码</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">命令成功结束</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">通用未知错误</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">误用shell命令</td>
+</tr>
+<tr>
+<td style="text-align:left">126</td>
+<td style="text-align:left">命令不可执行</td>
+</tr>
+<tr>
+<td style="text-align:left">127</td>
+<td style="text-align:left">没有找到命令</td>
+</tr>
+<tr>
+<td style="text-align:left">128</td>
+<td style="text-align:left">无效退出参数</td>
+</tr>
+<tr>
+<td style="text-align:left">128+x</td>
+<td style="text-align:left">Linux信号x的严重错误</td>
+</tr>
+<tr>
+<td style="text-align:left">130</td>
+<td style="text-align:left">命令通过Ctrl+C终止</td>
+</tr>
+<tr>
+<td style="text-align:left">255</td>
+<td style="text-align:left">退出状态码越界</td>
+</tr>
+</tbody>
+</table>
+<h4 id="exit命令"><a href="#exit命令" class="headerlink" title="exit命令"></a>exit命令</h4><p>默认情况，shell脚本会以脚本中最后一个命令的退出状态码退出。同时你也可以自定义退出返回状态码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line">var=1</span><br><span class="line"><span class="built_in">exit</span> 5</span><br></pre></td></tr></table></figure>
+<p>当执行完上面的脚本，并且查看$?的值的时候输出的是5。</p>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/linux-shell/">linux shell</a></div><div class="post-nav"><a class="pre" href="/2014/11/06/linux-shell-learn2/">shell当中的if-else语句</a><a class="next" href="/2014/11/03/java-arraylist/">Java中ArrayList源码分析</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

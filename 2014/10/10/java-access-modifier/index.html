@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>Java访问修饰符 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java访问修饰符</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java访问修饰符</h1><div class="post-meta">Oct 10, 2014<span> | </span><span class="category"><a href="/categories/java基础/">java基础</a></span></div><div class="post-content"><h4 id="访问修饰符"><a href="#访问修饰符" class="headerlink" title="访问修饰符"></a>访问修饰符</h4><p>java提供了四种访问修饰符，从大到小的权限依次为：public、protected、包访问权限（没有关键词）、private。</p>
+<p>访问修饰符可以修饰类的成员和方法。</p>
+<h4 id="包访问权限"><a href="#包访问权限" class="headerlink" title="包访问权限"></a>包访问权限</h4><p>默认访问权限就是包访问权限，包访问权限没有任何关键字。对于同一个包当中的类对这个成员有访问权限，其他包的无访问权限。</p>
+<h4 id="public访问权限"><a href="#public访问权限" class="headerlink" title="public访问权限"></a>public访问权限</h4><p>被public所修饰的属性和方法可以被所有类访问。</p>
+<h4 id="private访问权限"><a href="#private访问权限" class="headerlink" title="private访问权限"></a>private访问权限</h4><p>被private所修饰的属性和方法只能在该类内部使用。</p>
+<h4 id="protected访问权限"><a href="#protected访问权限" class="headerlink" title="protected访问权限"></a>protected访问权限</h4><p>被protected所修饰的属性和方法可以在类内部、相同包以及该类的子类内部所访问。</p>
+<p>子类内部所访问的含义：相当于protected的属性或者方法被继承下来了，可以通过子类对象访问，但是在子类中new一个父类对象同样不可以使用（不在同一个包的时候,并且是在子类当中）。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">可见/访问性</th>
+<th style="text-align:left">在同一类中</th>
+<th style="text-align:left">同一包中</th>
+<th style="text-align:left">不同包中</th>
+<th style="text-align:left">同一包子类中</th>
+<th style="text-align:left">不同包子类中</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">public</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+</tr>
+<tr>
+<td style="text-align:left">protected</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">no</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+</tr>
+<tr>
+<td style="text-align:left">package</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">no</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">no</td>
+</tr>
+<tr>
+<td style="text-align:left">private</td>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">no</td>
+<td style="text-align:left">no</td>
+<td style="text-align:left">no</td>
+<td style="text-align:left">no</td>
+</tr>
+</tbody>
+</table>
+<p>—EOF—</p>
+</div><div class="tags"><a href="/tags/笔记/">笔记</a></div><div class="post-nav"><a class="pre" href="/2014/10/10/bit-operation/">位运算</a><a class="next" href="/2014/10/08/lua-learn3/">lua学习3</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

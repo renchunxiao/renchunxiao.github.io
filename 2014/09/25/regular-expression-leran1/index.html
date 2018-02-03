@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Java，JVM，Redis，Hbase，分布式，Mongo"><title>正则表达式 | 任春晓的博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">正则表达式</h1><a id="logo" href="/.">任春晓的博客</a><p class="description">学而不思则罔，思而不学则殆</p></div><div id="nav-menu"><a href="/"><i class="fa fa-home"> 首页</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">正则表达式</h1><div class="post-meta">Sep 25, 2014<span> | </span><span class="category"><a href="/categories/正则表达式/">正则表达式</a></span></div><div class="post-content"><h4 id="匹配单个字符"><a href="#匹配单个字符" class="headerlink" title="匹配单个字符"></a>匹配单个字符</h4><ul>
+<li><p>“.”可以匹配任意的 单个 字符、英文字母、数字，以及它本身。</p>
+</li>
+<li><p>有的时候，我们不想让“.”去匹配任何的字符，仅仅想让它匹配“.”这一单个字符，也就是仅匹配它本身。此时，可以使用“.”来对它进行转义。</p>
+</li>
+<li><p>正则表达式提供字符组它的语法是 “[dt]”。中括号是特殊标记，用以划定属于组内的字符的界限，它所代表的含义是：“匹配d或者t”。 字符组虽然由多个字符构成，但它仍只匹配单个字符，而字符组能够匹配的单个字符，即是它定义中的字符（“[]”内的字符）。“[]”本身不进行字符匹配，它仅仅划定字符组边界。</p>
+</li>
+<li><p>在字符组中可以使用区间，不一定非要将匹配写成“[0-9]”，完全可以根据需要写成“[0-3]”，它将仅匹配“0,1,2,3”这个区间。起始字符 和 结束字符，依据的是它的 ASCⅡ值的大小，即是说，将会匹配其ASCⅡ码位于 起始字符 和 结束字符 的ASCⅡ之间的所有字符(包含起始、结束字符)。另外，如果起始字符的ASCⅡ值大于结束字符的ASCⅡ值，例如，如果你写成“[3-0]”，则会出错，导致匹配失败。</p>
+</li>
+<li><p>如果要在字符组(“[”“]”内)中匹配“-”，需要使用转义符，写法是“-”； 而在“[”“]”以外，“-”变成了一个普通字符，无需再进行转义。</p>
+</li>
+<li><p>反义字符组。有的时候，我们需要匹配“除了某些字符以外”的其他字符，这时候，我们可以使用反义字符组，其语法是：“[^字符集合]”。 不管是普通字符组还是反义字符组，它总是确定一定以及肯定要匹配一个字符的。当^出现在[]中的时候才代表反义字符。</p>
+</li>
+<li><p>如果需要匹配特殊字符就需要对特殊字符进行转义。需要使用“\”来进行转义，如果想要匹配“.”字符，只需要“.”进行转义。</p>
+</li>
+<li><p>如何匹配回车换行，“\t”:Tab建、“\r”:回车、“\n”:换行。</p>
+</li>
+<li><p>对于“.”和“[”等来说，它们本身就是元字符，而当给它们前面加上转义字符“\”的时候，它们才代表一个普通字符：“.”匹配字符“.”，“[”匹配字符“[”。</p>
+</li>
+<li><p>对于“r”和“n”等来说，它们本身只是普通字符，而只有当加上转义字符“\”的时候(变成了“\r”和“\n”)，它们才代表着元字符：“\r”匹配空字符回车，“\n”匹配空字符换行。</p>
+</li>
+</ul>
+<p><strong>普通字符转义后代表的元字符表如下：</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">元字符</th>
+<th style="text-align:left">匹配描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">\d</td>
+<td style="text-align:left">所有单个数字，与 [0-9] 相同</td>
+</tr>
+<tr>
+<td style="text-align:left">\D</td>
+<td style="text-align:left">所有单个非数字，与 [^0-9] 相同</td>
+</tr>
+<tr>
+<td style="text-align:left">\w</td>
+<td style="text-align:left">所有单个大小写字母、数字、下划线，与 [a-zA-Z0-9_] 相同</td>
+</tr>
+<tr>
+<td style="text-align:left">\W</td>
+<td style="text-align:left">所有单个非大小写字母、数字、下划线，与 [^a-zA-Z0-9_] 相同</td>
+</tr>
+<tr>
+<td style="text-align:left">\s</td>
+<td style="text-align:left">所有单个空字符，与 [\f\n\r\t\v] 相同(即空格)</td>
+</tr>
+<tr>
+<td style="text-align:left">\S</td>
+<td style="text-align:left">所有单个非空字符，与 [^\f\n\r\t\v] 相同(即非空格)</td>
+</tr>
+<tr>
+<td style="text-align:left">\b</td>
+<td style="text-align:left">写在字符前代表以某个字符开头，写在字符后面代表以某个字符结尾。</td>
+</tr>
+<tr>
+<td style="text-align:left">\B</td>
+<td style="text-align:left">写在字符前代表不以某个字符开头，写在字符后面代表不以某个字符结尾。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="匹配多个字符"><a href="#匹配多个字符" class="headerlink" title="匹配多个字符"></a>匹配多个字符</h4><ul>
+<li><p><strong>匹配一个或多个字符：</strong>“+”，例如：j+，表示匹配至少j或者jj或者jjj等等这样的字符串。</p>
+</li>
+<li><p><strong>匹配零个或多个字符：</strong>“<code>*</code>”，例如：<code>j*</code>，表示匹配没有j或者多个j重复的字符串。</p>
+</li>
+<li><p><strong>匹配零个或一个字符：</strong>“？”，例如：j？，表示匹配没有j，或者只有一个j。</p>
+</li>
+<li><p>很明显“+”，“<code>*</code>”，“？”都是元字符，如果需要匹配这样字符需要进行<code>\+</code>,<code>\*</code>,<code>\?</code>,进行转义操作进行匹配。</p>
+</li>
+<li><p>匹配指定数目的字符：正则表达式中，可以在 单个字符(比如“j”)、字符组(比如“[abcde]”)、特定字符类型(比如“\d”)、单个任意字符(即“.”) 后面加“{数字}”，来表示匹配零个或多个字符组成的字符串。例如：使用“\d{3}”，可以匹配从 000 到 999，这1000个数。而使用“a{6}”，则可以匹配“aaaaaa”(也只能匹配它，因为“a”是固定字符)。</p>
+</li>
+<li><p>匹配区间以内数目的字符：正则表达式中，使用“{最小数目，最大数目}”的语法来实现，它的使用方式与上面介绍的匹配固定数目字符的语法相同。</p>
+</li>
+<li><p>最小数目可以是0，所以 “{0,1}”，相当于 “?”。<br>如果不限制最大数目，可以将最大数目设为空，所以{1,}相当于+；而{0,}相当于<code>*</code>。</p>
+</li>
+<li><p>‘{‘和’}’也是元字符，当我们需要对它们进行匹配的时候，使用\进行转义：<code>\{</code>和<code>\}</code>。</p>
+</li>
+</ul>
+<h4 id="贪婪匹配和惰性匹配"><a href="#贪婪匹配和惰性匹配" class="headerlink" title="贪婪匹配和惰性匹配"></a>贪婪匹配和惰性匹配</h4><ul>
+<li><p>贪婪匹配(greedy)：它会匹配尽可能多的字符。它首先看整个字符串，如果不匹配，对字符串进行收缩；遇到可能匹配的文本，停止收缩，对文本进行扩展，当发现匹配的文本时，它不着急将该匹配保存到匹配集合中，而是对文本继续扩展，直到无法继续匹配 或者 扩展完整个字符串，然后将前面最后一个符合匹配的文本(也是最长的)保存起来到匹配集合中。所以说它是贪婪的。</p>
+</li>
+<li><p>惰性匹配(lazy)：它会匹配尽可能少的字符，它从第一个字符开始找起，一旦符合条件，立刻保存到匹配集合中，然后继续进行查找。所以说它是懒惰的。</p>
+</li>
+</ul>
+<p><strong>语法表如下：</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">贪婪匹配</th>
+<th style="text-align:left">惰性匹配</th>
+<th style="text-align:left">匹配描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">?</td>
+<td style="text-align:left">??</td>
+<td style="text-align:left">匹配0个或1个</td>
+</tr>
+<tr>
+<td style="text-align:left">+</td>
+<td style="text-align:left">+?</td>
+<td style="text-align:left">匹配1个或多个</td>
+</tr>
+<tr>
+<td style="text-align:left">*</td>
+<td style="text-align:left">*?</td>
+<td style="text-align:left">匹配0个或多个</td>
+</tr>
+<tr>
+<td style="text-align:left">{n}</td>
+<td style="text-align:left">{n}?</td>
+<td style="text-align:left">匹配n个</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,m}</td>
+<td style="text-align:left">{n,m}?</td>
+<td style="text-align:left">匹配n到m个</td>
+</tr>
+<tr>
+<td style="text-align:left">{n,}</td>
+<td style="text-align:left">{n,}?</td>
+<td style="text-align:left">匹配n到无限大</td>
+</tr>
+</tbody>
+</table>
+<h4 id="匹配边界"><a href="#匹配边界" class="headerlink" title="匹配边界"></a>匹配边界</h4><ul>
+<li><p>匹配单词边界：正则表达式中，可以在字符前加“\b”，来匹配其 后面的字符位于字符串首位的字符。字符指：单个字符(比如“j”)、字符组(比如“[abcde]”)、特定字符类型(比如“\d”)、转义过的特殊字符“[” 或者 单个任意字符(即“.”)。<br>例如:<br>Attention: Zhang is the first name of Zh JimmyZhang.<br>\bZ进行匹配结果如下，只匹配的单词开头为Z的。<br>Attention: <code>Z</code>hang is the first name of <code>Z</code>h JimmyZhang.</p>
+</li>
+<li><p>正则表达式中，可以在字符后加“\b”，来匹配其前面的字符位于字符串末位的字符。<br>例如：<br>The cat scat tered its food all over the room.<br>以\bcat\b进行匹配,表示即以c开头并且以t结尾中间有a的字符串yi匹配，结果如下：<br>The <code>cat</code> scat tered its food all over the room.</p>
+</li>
+<li><p><strong>单词边界符号</strong>：通常情况下，以空格、段落首行、段落末尾、逗号、句号等符号作为边界，值得注意的是，分隔符“-”也可以作为边界。例如：<br>The cat s-cat-tered its food all over the room.<br>以\bcat\b进行匹配，结果如下<br>The <code>cat</code> s-<code>cat</code>-tered its food all over the room.</p>
+</li>
+<li><p><strong>边界的相对性</strong>：当你对一个普通字符，比如“s”，设定边界的时候，它的边界是诸如空格、分隔符、逗号、句号等。当你对一个边界，比如分隔符“-”或者“,”等，设定边界的时候，它的边界是普通字符。<br>如下匹配普通字符：<br>aaaaxaaaa  aaa-x-aaa<br>以\bx\b进行匹配结果为<br>aaaaxaaaa  aaa-<code>x</code>-aaa<br>匹配边界符：<br>aaaa,aaaa  aaa-,-aaa<br>以\b,\b进行匹配结果为<br>aaaa<code>,</code>aaaa  aaa-,-aaa</p>
+</li>
+<li><p>匹配非单词边界：\B<br>例如：<br>The cat scattered its food all over the room.<br>以\Bcat\B进行匹配<br>The cat s<code>cat</code>tered its food all over the room.</p>
+</li>
+<li><p>匹配文本边界<br>使用<code>^</code>来匹配文本首，使用<code>$</code>来匹配文本尾。</p>
+</li>
+</ul>
+<h4 id="匹配子模式"><a href="#匹配子模式" class="headerlink" title="匹配子模式"></a>匹配子模式</h4><ul>
+<li><p>在正则表达式中，可以使用“(”和“)”将模式中的子字符串括起来，以形成一个子模式。将子模式视为一个整体时，那么它就相当于一个单个字符。</p>
+</li>
+<li><p>有的时候，我们要取消某段文字中的加粗、斜体等效果，我们想匹配所有的<code>&lt;b&gt;</code>、<code>&lt;/b&gt;</code> 或者 <code>&lt;i&gt;</code>、<code>&lt;/i&gt;</code>，然后把它们替换成空，仅利用之前的知识，我们只能进行两次匹配和替换，一次是<code>&lt;/?b&gt;</code>，一次是<code>&lt;/?i&gt;</code>。<br>在正则表达式中，可以使用“|”将一个表达式拆分成两部分“reg1|reg2”，它的意思是：匹配所有符合表达式reg1的文本 或者 符合表达式reg2的文本。</p>
+</li>
+</ul>
+</div><div class="tags"><a href="/tags/正则表达式/">正则表达式</a></div><div class="post-nav"><a class="pre" href="/2014/09/29/lua-learn2/">lua学习2</a><a class="next" href="/2014/09/24/lua-learn1/">lua学习1</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Bootstrap学习/">Bootstrap学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Elasticsearch/">Elasticsearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java解惑/">Java解惑</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cache/">cache</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/eclipse/">eclipse</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/effective-java/">effective-java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/guava/">guava</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/html/">html</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/http/">http</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/j2ee/">j2ee</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java-ognl/">java-ognl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/javaNIO/">javaNIO</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jdbc/">jdbc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jms/">jms</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/js基础/">js基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/junit/">junit</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/log/">log</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mybatis/">mybatis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcp-ip/">tcp/ip</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/vim/">vim</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/websocket/">websocket</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/">代码优化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/折腾/">折腾</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库连接池/">数据库连接池</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/">正则表达式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/理解计算机/">理解计算机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/程序员修炼/">程序员修炼</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/重构/">重构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/页面设计/">页面设计</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2018 <a href="/." rel="nofollow">任春晓的博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
